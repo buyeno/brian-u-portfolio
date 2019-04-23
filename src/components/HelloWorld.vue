@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-    <img id="splash" class="splash" src="../assets/Starry_Night.webp">
-    <img id="xsmallSplash" class="splash" src="../assets/Starry_Night_xs.webp">
-    <img id="smallSplash" class="splash" src="../assets/Night_Silhouette_small.webp">
+    <img id="splash" class="splash" src="../assets/Starry_Night.webp" alt="night silhouette splash image">
+    <img id="xsmallSplash" class="splash" src="../assets/Starry_Night_xs.webp" alt="night silhouette splash image">
+    <img id="smallSplash" class="splash" src="../assets/Night_Silhouette_small.webp" alt="night silhouette splash image">
     <svg class="star" height="100" width="100">
       <circle cx="10" cy="10" r="5" fill="white" />
     </svg>
