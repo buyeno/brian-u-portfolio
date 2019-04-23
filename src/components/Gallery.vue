@@ -30,16 +30,16 @@
       <h2>Renders</h2>
       <div class="row">
         <div class="column">
-          <img src="../assets/Carabiner.png" style="width:100%" />
-          <img src="../assets/Thick_Lines.png" style="width:100%" />
-          <img src="../assets/Thin_Lines.png" style="width:100%" />
+          <img src="../assets/Carabiner.jpg" style="width:100%" />
+          <img src="../assets/Thick_Lines.jpg" style="width:100%" />
+          <img src="../assets/Thin_Lines.jpg" style="width:100%" />
         </div>
 
         <div class="column">
-          <img src="../assets/render_textured.png" style="width:100%" />
-          <img src="../assets/Render_Aviator.png" style="width:100%" />
-          <img src="../assets/render_black.png" style="width:100%" />
-          <img src="../assets/Bottle_Render.png" style="width:100%" />
+          <img src="../assets/render_textured.jpg" style="width:100%" />
+          <img src="../assets/Render_Aviator.jpg" style="width:100%" />
+          <img src="../assets/render_black.jpg" style="width:100%" />
+          <img src="../assets/Bottle_Render.jpg" style="width:100%" />
 
           <!-- <video style="width:100%" controls>
           <source src="../assets/Route_Lines.mp4" type="video/mp4">
