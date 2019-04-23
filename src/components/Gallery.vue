@@ -4,18 +4,18 @@
       <h2>Vector Illustration</h2>
       <div class="row">
         <div class="column">
-          <img src="../assets/Melon_Bike.png" style="width:100%" />
-          <img src="../assets/DummSite.png" style="width:100%" />
-          <img src="../assets/Wine_Bottle_2d.png" style="width:100%" />
-          <img src="../assets/Letter.png" style="width:100%" />
+          <img src="../assets/Melon_Bike.webp" style="width:100%" />
+          <img src="../assets/DummSite.webp" style="width:100%" />
+          <img src="../assets/Wine_Bottle_2d.webp" style="width:100%" />
+          <img src="../assets/Letter.webp" style="width:100%" />
 
         </div>
 
         <div class="column">
-          <img src="../assets/Messy_Desk.png" style="width:100%" />
-          <img src="../assets/Clean_Desk.png" style="width:100%" />
-          <img src="../assets/ClimbAssist_Logo_Full.png" style="width:100%" />
-          <img src="../assets/AtlasLogo.png" style="width:100%" />
+          <img src="../assets/Messy_Desk.webp" style="width:100%" />
+          <img src="../assets/Clean_Desk.webp" style="width:100%" />
+          <img src="../assets/ClimbAssist_Logo_Full.webp" style="width:100%" />
+          <img src="../assets/AtlasLogo.webp" style="width:100%" />
         </div>
         <!-- <div class="column">
 
@@ -30,16 +30,16 @@
       <h2>Renders</h2>
       <div class="row">
         <div class="column">
-          <img src="../assets/Carabiner.jpg" style="width:100%" />
-          <img src="../assets/Thick_Lines.jpg" style="width:100%" />
-          <img src="../assets/Thin_Lines.jpg" style="width:100%" />
+          <img src="../assets/Carabiner.webp" style="width:100%" />
+          <img src="../assets/Thick_Lines.webp" style="width:100%" />
+          <img src="../assets/Thin_Lines.webp" style="width:100%" />
         </div>
 
         <div class="column">
-          <img src="../assets/render_textured.jpg" style="width:100%" />
-          <img src="../assets/Render_Aviator.jpg" style="width:100%" />
-          <img src="../assets/render_black.jpg" style="width:100%" />
-          <img src="../assets/Bottle_Render.jpg" style="width:100%" />
+          <img src="../assets/render_textured.webp" style="width:100%" />
+          <img src="../assets/Render_Aviator.webp" style="width:100%" />
+          <img src="../assets/render_black.webp" style="width:100%" />
+          <img src="../assets/Bottle_Render.webp" style="width:100%" />
 
           <!-- <video style="width:100%" controls>
           <source src="../assets/Route_Lines.mp4" type="video/mp4">
