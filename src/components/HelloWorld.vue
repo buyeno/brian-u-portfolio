@@ -1,15 +1,10 @@
 <template>
   <div class="hello">
-    <img id="splash" class="splash" src="../assets/Starry_Night.webp" alt="night silhouette splash image">
-    <img id="xsmallSplash" class="splash" src="../assets/Starry_Night_xs.webp" alt="night silhouette splash image">
-    <img id="smallSplash" class="splash" src="../assets/Night_Silhouette_small.webp" alt="night silhouette splash image">
-    <svg class="star" height="100" width="100">
-      <circle cx="10" cy="10" r="5" fill="white" />
-    </svg>
-    <h1>Visual Designs by Brian Uyeno</h1>
+    <h1>Brian Uyeno</h1>
+    <h2> Visual Designer</h2>
     <h3>Vector &bull; 3D &bull; Web</h3>
     <div class="row">
-      <button @click="galleryScroll()" @hover="setHoverState()" class="scroll-button">CHECK OUT SOME SAMPLES</button>
+      <button @click="galleryScroll()" @hover="setHoverState()" class="button">CHECK OUT SOME SAMPLES</button>
     </div>
     <div class="arrow">
         <span></span>
@@ -24,9 +19,6 @@
 import Gallery from "./Gallery.vue";
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
-  },
   methods: {
     setHoverState() {
       // document.getElementsByClassName()
@@ -44,14 +36,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.splash {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
-  width: 100%;
-}
-
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -71,24 +55,13 @@ export default {
   vertical-align: middle;
 }
 
-.scroll-button {
-  color: #ffffff;
-  padding: 1em;
-  background-color:transparent;
-  border-radius: 1em;
-  border: 2px solid #ffffff;
-}
-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
-}
+
+
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
   .column {
     flex: 50%;
     max-width: 50%;
-  }
-  .cloud {
-    max-width: 25%;
   }
   h1 {
     font-size: 2em;
@@ -124,6 +97,9 @@ button:hover {
   h1 {
     font-size: 5em;
   }
+  h2 {
+    font-size: 3em;
+  }
   .cloud {
     max-width: 10%;
   }
@@ -155,7 +131,7 @@ a {
 .arrow{
     position: absolute;
     justify-content: center;
-    top: 75%;
+    top: 85%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
@@ -208,7 +184,7 @@ a {
   }
   40%{
     left:100%;
-    top: 25%;
+    top: 300px;
     opacity: 0;
   }
   70%{
@@ -221,7 +197,7 @@ a {
   }
   85%{
     left:100%;
-    top: 15%;
+    top: 200px;
     opacity: 0;
   }
   100%{

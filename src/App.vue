@@ -1,18 +1,26 @@
 <template>
   <div id="app">
     <div class="toolbar">
-      <span>
+      <span @click="currentTab='HelloWorld'">
         Gallery
       </span>
-      <span>
+      <span @click="currentTab='ThreeVis'">
         3D Viewer
       </span>
-      <span>
-        Web
+      <span @click="currentTab='Contact'">
+        Contact
       </span>
     </div>
     <!-- <img src="./assets/Brian_Full.png" alt="Brian Uyeno Photo" style="max-height:500px;"> -->
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+    <div id="background">
+      <img id="splash" class="splash" src="./assets/Starry_Night.webp" alt="night silhouette splash image">
+      <img id="xsmallSplash" class="splash" src="./assets/Starry_Night_xs.webp" alt="night silhouette splash image">
+      <img id="smallSplash" class="splash" src="./assets/Night_Silhouette_small.webp" alt="night silhouette splash image">
+    </div>
+    <svg class="star" height="100" width="100">
+      <circle cx="10" cy="10" r="5" fill="white" />
+    </svg>
     <component id="content" :is="currentTab" />
     <!-- <Gallery/> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
@@ -48,7 +56,19 @@ export default {
       } else {
         panel.style.display = "block";
       }
+    },
+    setBackgroundHeight() {
+      let background = document.getElementById('background')
+      background.style.height = window.innerHeight-12 + 'px';
+      console.log(window.innerHeight)
+    },
+    init () {
+      this.setBackgroundHeight();
+      window.addEventListener("resize", this.setBackgroundHeight, false);
     }
+  },
+  mounted() {
+    this.init()
   }
 };
 </script>
@@ -67,10 +87,22 @@ body {
 }
 #content {
   padding-top: 60px;
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
 }
 body{
     overflow-x:hidden;
+}
+button:hover {
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+}
+button:focus {outline:0;}
+
+.button {
+  color: #ffffff;
+  padding: 1em;
+  background-color:transparent;
+  border-radius: 1em;
+  border: 2px solid #ffffff;
 }
 
 </style>
@@ -95,6 +127,7 @@ body{
   cursor: pointer;
   padding: 18px;
   width: 100%;
+  max-height: 100%;
   text-align: center;
   border: none;
   outline: none;
@@ -120,5 +153,120 @@ body{
   position: fixed;
   left: 0;
   bottom: 40px;
+}
+#background {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+}
+.splash {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+  width: 100%;
+  overflow-y: hidden;
+}
+
+@media (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  #splash {
+    display: none;
+  }
+  #xsmallSplash {
+    display: none;
+  }
+  #smallSplash {
+    display: block;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  #splash {
+    display: none;
+  }
+  #smallSplash {
+    display: none;
+  }
+  #xsmallSplash {
+    display: block;
+  }
+}
+@media (min-width: 800px) {
+  #splash {
+    display: block;
+  }
+  #smallSplash {
+    display: none;
+  }
+  #xsmallSplash {
+    display: none;
+  }
+}
+
+@keyframes animate {
+    0%{
+        opacity: 0;
+        transform: rotate(45deg) translate(-20px,-20px);
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform: rotate(45deg) translate(20px,20px);
+    }
+}
+
+.star {
+  position: absolute;
+  left:-100px;
+  animation: star-shoot 8s linear infinite;
+  animation-delay: 5s;
+  z-index: -1;
+  overflow: clip;
+}
+@keyframes star-shoot {
+  0%{
+    opacity: 1;
+  }
+  25%{
+    left:-100px;
+    top:0;
+    opacity: 1;
+  }
+  40%{
+    left:100%;
+    top: 300px;
+    opacity: 0;
+  }
+  70%{
+    left:100px;
+    top:-100px;
+    opacity: 0;
+  }
+  75%{
+    opacity: 1;
+  }
+  85%{
+    left:100%;
+    top: 200px;
+    opacity: 0;
+  }
+  100%{
+    left:-100px;
+    top:0;
+    opacity: 0;
+  }
 }
 </style>

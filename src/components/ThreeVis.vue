@@ -1,6 +1,10 @@
 <template>
   <div id="canvas">
     <div id="container"></div>
+    <div id="buttons-container">
+      <button class="button"@click="model='Gunmetal_Green.glb'">Aviators</button>
+      <button class="button"@click="model='Gunmetal_Green.glb'">Textured</button>
+    </div>
   </div>
 </template>
 
@@ -15,7 +19,7 @@ export default {
       "Thick_Lines.glb"
     ],
     navHeight: 30,
-    model: "Textured_Glasses.glb",
+    model: "Gunmetal_Green.glb",
     currentModel: null,
     scene: null,
     mesh: null,
@@ -31,28 +35,29 @@ export default {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0xCCCCCC)
+      // this.scene.background = new THREE.Color(0xCCCCCC)
 
+      // this.scene.background = background;
       this.camera = new THREE.PerspectiveCamera(
         45,
         container.clientWidth / container.clientHeight,
         1,
         1000
       );
-      this.camera.position.z = 10;
+      this.camera.position.z = 20;
       // can add up to 20 layers to toggle hide/show
       this.camera.layers.enable(1); // model
       this.camera.layers.enable(2); // routes
       this.camera.layers.enable(3); // tics
       this.camera.target = new THREE.Vector3();
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: true });
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       this.renderer.setSize(container.clientWidth, container.clientHeight);
       container.appendChild(this.renderer.domElement);
 
       this.controls = new Orbitcontrols(this.camera, this.renderer.domElement);
-      // this.controls.minDistance = 50;
-      // this.controls.maxDistance = 200;
+      this.controls.minDistance = 10;
+      this.controls.maxDistance = 30;
 
       // set based on model
       // if (this.crag.crag.model.azumuth) {
@@ -63,7 +68,7 @@ export default {
       // this.controls.maxPolarAngle = Math.PI / 2;
       // this.controls.screenSpacePanning = true;
 
-      this.scene.add(new THREE.AmbientLight());
+      this.scene.add(new THREE.AmbientLight(0x404040, 3));
       let frontLeftLight = new THREE.PointLight();
       frontLeftLight.position.z=1
 
@@ -77,11 +82,11 @@ export default {
       this.scene.add(frontRightLight)
 
       let leftLight = new THREE.PointLight();
-      leftLight.position.x=5
+      leftLight.position.x=10
       this.scene.add(leftLight)
 
       let rightLight = new THREE.PointLight();
-      rightLight.position.x=-5
+      rightLight.position.x=-10
       this.scene.add(rightLight)
 
       let topLight = new THREE.PointLight();
@@ -126,14 +131,18 @@ export default {
       if (this.play) {
         requestAnimationFrame(this.animate);
 
-        this.renderer.setClearColor(0x2222222, 1);
+        this.renderer.setClearColor(0x0000000, .3);
         this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 
         this.renderer.render(this.scene, this.camera);
       }
     },
     onWindowResize: function() {
-      if (this.play) {
+      // if (this.play) {
+      let container = document.getElementById('container');
+      container.style.height= window.innerHeight-80 + 'px';
+      this.renderer.setSize(container.clientWidth, container.clientHeight);
+
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
 
@@ -146,7 +155,7 @@ export default {
         //     window.innerHeight - this.navHeight
         //   );
         // }
-      }
+      // }
     },
     async loadModel() {
       let loader = new GLTFLoader();
@@ -190,7 +199,17 @@ export default {
 <style scoped>
 #container {
   width: 100%;
-  height: 500px;
   box-sizing: border-box;
+}
+#buttons-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+.button {
+  margin: 10px;
 }
 </style>
