@@ -1,27 +1,46 @@
 <template>
   <div id="app">
-    <div class="toolbar">
-      <span @click="currentTab='HelloWorld'">
+    <div id="navbar" class="toolbar">
+      <span @click="(currentTab = 'HelloWorld'), setActiveClass()">
         Gallery
       </span>
-      <span @click="currentTab='ThreeVis'">
+      <span @click="(currentTab = 'ThreeVis'), setActiveClass()">
         3D Viewer
       </span>
-      <span @click="currentTab='Contact'">
+      <span @click="(currentTab = 'Contact'), setActiveClass()">
         Contact
       </span>
     </div>
     <!-- <img src="./assets/Brian_Full.png" alt="Brian Uyeno Photo" style="max-height:500px;"> -->
     <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
     <div id="background">
-      <img id="splash" class="splash" src="./assets/Starry_Night.webp" alt="night silhouette splash image">
-      <img id="xsmallSplash" class="splash" src="./assets/Starry_Night_xs.webp" alt="night silhouette splash image">
-      <img id="smallSplash" class="splash" src="./assets/Night_Silhouette_small.webp" alt="night silhouette splash image">
+      <img
+        id="splash"
+        class="splash"
+        src="./assets/Starry_Night.webp"
+        alt="night silhouette splash image"
+      />
+      <img
+        id="xsmallSplash"
+        class="splash"
+        src="./assets/Starry_Night_xs.webp"
+        alt="night silhouette splash image"
+      />
+      <img
+        id="smallSplash"
+        class="splash"
+        src="./assets/Night_Silhouette_small.webp"
+        alt="night silhouette splash image"
+      />
     </div>
     <svg class="star" height="100" width="100">
       <circle cx="10" cy="10" r="5" fill="white" />
     </svg>
-    <component id="content" :is="currentTab" />
+    <transition name="tab" mode="out-in">
+      <keep-alive>
+        <component id="content" :is="currentTab" />
+      </keep-alive>
+    </transition>
     <!-- <Gallery/> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
     <!-- <div class="panel" id="contact-panel">
@@ -40,7 +59,8 @@ import Web from "./components/Web.vue";
 export default {
   name: "app",
   data: () => ({
-    currentTab: "HelloWorld"
+    currentTab: "HelloWorld",
+    backgroundHeight: null
   }),
   components: {
     HelloWorld,
@@ -58,25 +78,40 @@ export default {
       }
     },
     setBackgroundHeight() {
-      let background = document.getElementById('background')
-      background.style.height = window.innerHeight-12 + 'px';
-      console.log(window.innerHeight)
+      let background = document.getElementById("background");
+      background.style.height = window.innerHeight - 12 + "px";
+      this.backgroundHeight = background.clientHeight;
     },
-    init () {
+    checkNavOpacity() {
+      let scrollTop = window.pageYOffset;
+      let nav = document.getElementById("navbar");
+      // get scroll position in px
+      if (scrollTop > this.backgroundHeight) {
+        nav.style = "background-color: rgba(0, 0, 0, 1);";
+      } else {
+        nav.style = "background-color: rgba(0, 0, 0, 0);";
+      }
+    },
+    setActiveClass() {
+      var element = document.getElementById("background");
+      element.scrollIntoView({ behavior: "smooth" });
+    },
+    init() {
       this.setBackgroundHeight();
       window.addEventListener("resize", this.setBackgroundHeight, false);
+      window.addEventListener("scroll", this.checkNavOpacity, false);
     }
   },
   mounted() {
-    this.init()
+    this.init();
   }
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Poppins|Dosis');
+@import url("https://fonts.googleapis.com/css?family=Poppins|Dosis");
 body {
-  background-color: #000000
+  background-color: #000000;
 }
 #app {
   font-family: "Dosis", sans-serif;
@@ -89,22 +124,38 @@ body {
   padding-top: 60px;
   /* padding-bottom: 30px; */
 }
-body{
-    overflow-x:hidden;
+body {
+  overflow-x: hidden;
 }
 button:hover {
-  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2),
+    0 6px 20px 0 rgba(255, 255, 255, 0.19);
+  cursor: pointer;
 }
-button:focus {outline:0;}
+button:focus {
+  outline: 0;
+}
 
 .button {
   color: #ffffff;
   padding: 1em;
-  background-color:transparent;
+  background-color: transparent;
   border-radius: 1em;
   border: 2px solid #ffffff;
 }
-
+.tab-enter {
+  opacity: 0;
+}
+.tab-enter-active {
+  transition: opacity 1s, transform 1s;
+}
+.tab-leave {
+}
+.tab-leave-active {
+  transition: opacity 1s, transform 1s;
+  transform: translateX(100px);
+  opacity: 0;
+}
 </style>
 <style scoped>
 .toolbar {
@@ -112,13 +163,20 @@ button:focus {outline:0;}
   justify-content: flex-end;
   flex-direction: row;
   position: fixed;
+  background-color: rgba(0, 0, 0, 0);
   right: 0;
+  top: 0;
+  width: 100%;
 }
 .toolbar > span {
-  padding: 3px;
+  padding: 8px;
   width: 100px;
-  margin: 10px;
+  /* margin: 10px; */
   text-align: center;
+}
+.toolbar > span:hover {
+  background-color: rgba(255, 255, 255, 0.19);
+  cursor: pointer;
 }
 /* Style the buttons that are used to open and close the accordion panel */
 .accordion {
@@ -215,57 +273,57 @@ button:focus {outline:0;}
 }
 
 @keyframes animate {
-    0%{
-        opacity: 0;
-        transform: rotate(45deg) translate(-20px,-20px);
-    }
-    50%{
-        opacity: 1;
-    }
-    100%{
-        opacity: 0;
-        transform: rotate(45deg) translate(20px,20px);
-    }
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px);
+  }
 }
 
 .star {
   position: absolute;
-  left:-100px;
+  left: -100px;
   animation: star-shoot 8s linear infinite;
   animation-delay: 5s;
   z-index: -1;
   overflow: clip;
 }
 @keyframes star-shoot {
-  0%{
+  0% {
     opacity: 1;
   }
-  25%{
-    left:-100px;
-    top:0;
+  25% {
+    left: -100px;
+    top: 0;
     opacity: 1;
   }
-  40%{
-    left:100%;
+  40% {
+    left: 100%;
     top: 300px;
     opacity: 0;
   }
-  70%{
-    left:100px;
-    top:-100px;
+  70% {
+    left: 100px;
+    top: -100px;
     opacity: 0;
   }
-  75%{
+  75% {
     opacity: 1;
   }
-  85%{
-    left:100%;
+  85% {
+    left: 100%;
     top: 200px;
     opacity: 0;
   }
-  100%{
-    left:-100px;
-    top:0;
+  100% {
+    left: -100px;
+    top: 0;
     opacity: 0;
   }
 }

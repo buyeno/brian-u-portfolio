@@ -8,7 +8,6 @@
           <img src="../assets/DummSite.webp" style="width:100%" alt="responsive site example" />
           <img src="../assets/Wine_Bottle_2d.webp" style="width:100%" alt="vector drawn wine bottle" />
           <img src="../assets/Letter.webp" style="width:100%" alt="wax sealed letter" />
-
         </div>
 
         <div class="column">
@@ -87,11 +86,9 @@ body {
 }
 .container {
   border-radius: 1em;
-  /* background-color: #3C2F43; */
   max-width:49%;
   padding-top: 1em;
   margin-top: 2em;
-  /* #3C2F43 */
 }
 
 /* Create four equal columns that sits next to each other */
