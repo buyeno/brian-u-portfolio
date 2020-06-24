@@ -2,34 +2,54 @@
   <div id="canvas">
     <div id="container"></div>
     <div id="buttons-container">
-      <button class="button"@click="model='Gunmetal_Green.glb'">Aviators</button>
-      <button class="button"@click="model='Gunmetal_Green.glb'">Textured</button>
+      <div v-for="(model, i) in models">
+      <button class="button" @click="toggleLayer(i), model=i ">{{model.name}}</button>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
 import * as THREE from "three";
-import Orbitcontrols from "three-orbitcontrols";
-import GLTFLoader from "three-gltf-loader";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 export default {
   name: "ThreeVis",
-  data: () => ({
-    models: [
-      "Thick_Lines.glb"
-    ],
-    navHeight: 30,
-    model: "Gunmetal_Green.glb",
-    currentModel: null,
-    scene: null,
-    mesh: null,
-    camera:  null,
-    renderer: null,
-    controls: null,
-    meshScale: 10,
-    fullscreenTrigger: false,
-    play: true
-  }),
+  data() {
+    return {
+      models: [
+        {
+          name: "Aviators",
+          model: "Gunmetal_Green.glb",
+          scale: 10,
+          group: undefined
+        },
+        {
+          name: "Textured",
+          model: "Textured_Glasses.glb",
+          scale: 10,
+          group: undefined
+        },
+        {
+          name: "Bottle",
+          model: "Thick_Lines.glb",
+          scale: 20,
+          group: undefined
+        }
+      ],
+      navHeight: 30,
+      model: 0,
+      currentModel: null,
+      scene: null,
+      mesh: null,
+      camera:  null,
+      renderer: null,
+      controls: null,
+      meshScale: 10,
+      fullscreenTrigger: false,
+      play: true
+    }
+  },
   methods: {
     init: function() {
       let container = document.getElementById("container");
@@ -46,27 +66,24 @@ export default {
       );
       this.camera.position.z = 20;
       // can add up to 20 layers to toggle hide/show
-      this.camera.layers.enable(1); // model
-      this.camera.layers.enable(2); // routes
-      this.camera.layers.enable(3); // tics
+      // this.camera.layers.enable(1); // model
+      // this.camera.layers.disable(1); // routes
+      // this.camera.layers.disable(2); // routes
+      // this.camera.layers.disable(3); // tics
+      // this.camera.layers.disable(4);
+      // this.camera.layers.disable(5);
       this.camera.target = new THREE.Vector3();
 
+
       this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      this.renderer.gammaOutput = true;
+      this.renderer.gammaFactor = 2.2;
       this.renderer.setSize(container.clientWidth, container.clientHeight);
       container.appendChild(this.renderer.domElement);
 
-      this.controls = new Orbitcontrols(this.camera, this.renderer.domElement);
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       this.controls.minDistance = 10;
       this.controls.maxDistance = 30;
-
-      // set based on model
-      // if (this.crag.crag.model.azumuth) {
-      //   this.controls.minAzimuthAngle = this.crag.crag.model.azumuth[0];
-      //   this.controls.maxAzimuthAngle = this.crag.crag.model.azumuth[1];
-      // }
-
-      // this.controls.maxPolarAngle = Math.PI / 2;
-      // this.controls.screenSpacePanning = true;
 
       this.scene.add(new THREE.AmbientLight(0x404040, 3));
       let frontLeftLight = new THREE.PointLight();
@@ -138,48 +155,51 @@ export default {
       }
     },
     onWindowResize: function() {
-      // if (this.play) {
-      let container = document.getElementById('container');
-      container.style.height= window.innerHeight-80 + 'px';
-      this.renderer.setSize(container.clientWidth, container.clientHeight);
+      if (this.play) {
+        let container = document.getElementById('container');
+        container.style.height= window.innerHeight-80 + 'px';
+        this.renderer.setSize(container.clientWidth, container.clientHeight);
 
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
-
-        // if (this.fullscreenTrigger) {
-        //   this.fullscreenTrigger = false;
-        //   this.renderer.setSize(window.innerWidth, window.innerHeight);
-        // } else {
-        //   this.renderer.setSize(
-        //     window.innerWidth,
-        //     window.innerHeight - this.navHeight
-        //   );
-        // }
-      // }
+      }
     },
     async loadModel() {
       let loader = new GLTFLoader();
 
       // const model = await this.$axios.$get(this.crag.crag.model.link);
-
-      loader.load(
-        require("@/assets/" + this.model),
-        gltf => {
-          for (let key in gltf.scene.children) {
-            let mesh = gltf.scene.children[key];
-            mesh.layers.set(1);
-            mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
-            this.scene.add(mesh);
+      for (let i in this.models) {
+        this.models[i].group = new THREE.Group();
+        loader.load(
+          require("@/assets/" + this.models[i].model),
+          gltf => {
+            for (let key in gltf.scene.children) {
+              let mesh = gltf.scene.children[key];
+              mesh.scale.set(this.models[i].scale, this.models[i].scale, this.models[i].scale);
+              this.models[i].group.add(mesh);
+            }
+          },
+          error => {
+            console.log(error);
           }
-          // this.mesh = gltf.scene.children[0];
-          // this.mesh.layers.set(1);
-          // this.mesh.scale.set(this.meshScale, this.meshScale, this.meshScale);
-          // this.scene.add(this.mesh);
-        },
-        error => {
-          console.log(error);
+        );
+        this.scene.add(this.models[i].group)
+        if (i !=0 ){
+          this.models[i].group.visible=false;
         }
-      );
+      }
+
+
+    },
+    toggleLayer(i) {
+      for (let id in this.models) {
+        if (i == id) {
+          this.models[id].group.visible=true
+        } else {
+          this.models[id].group.visible=false
+        }
+      }
+      this.controls.reset();
     },
   },
   mounted() {
@@ -191,6 +211,7 @@ export default {
   },
   activated() {
     this.play = true;
+    this.onWindowResize();
     this.animate();
   }
 };

@@ -1,25 +1,26 @@
 <template>
-    <form name="contact" method="POST" netlify-honeypot="bot-field" data-netlify="true">
-      <div id="form-container">
-        <div class="form-submission">
-          <label>Email: <input type="text" name="email" /></label>
+  <form
+    name="contact"
+    method="POST"
+    data-netlify="true"
+  >
+    <div id="form-container">
+      <div class="form-submission">
+        <label>Email: <input type="text" name="email"/></label>
 
-            <label>Message: <textarea name="message"></textarea></label>
+        <label>Message: <textarea name="message"></textarea></label>
 
-          <button type="submit" class="button">Send</button>
-        </div>
+        <button type="submit" class="button">Send</button>
       </div>
-    </form>
+    </div>
+  </form>
 </template>
 
 <script>
 export default {
   name: "contact",
-  data: () => ({
-
-  }),
-  methods: {
-  }
+  data: () => ({}),
+  methods: {}
 };
 </script>
 

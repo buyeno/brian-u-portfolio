@@ -1,7 +1,10 @@
 <template>
   <div id="app">
+    <div id="name" class="name">
+      Brian Uyeno Designs
+    </div>
     <div id="navbar" class="toolbar">
-      <span @click="(currentTab = 'HelloWorld'), setActiveClass()">
+      <span @click="(currentTab = 'Home'), setActiveClass()">
         Gallery
       </span>
       <span @click="(currentTab = 'ThreeVis'), setActiveClass()">
@@ -11,8 +14,6 @@
         Contact
       </span>
     </div>
-    <!-- <img src="./assets/Brian_Full.png" alt="Brian Uyeno Photo" style="max-height:500px;"> -->
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
     <div id="background">
       <img
         id="splash"
@@ -33,25 +34,16 @@
         alt="night silhouette splash image"
       />
     </div>
-    <svg class="star" height="100" width="100">
-      <circle cx="10" cy="10" r="5" fill="white" />
-    </svg>
     <transition name="tab" mode="out-in">
       <keep-alive>
         <component id="content" :is="currentTab" />
       </keep-alive>
     </transition>
-    <!-- <Gallery/> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <!-- <div class="panel" id="contact-panel">
-      <Contact />
-    </div>
-    <button class="accordion" @click="toggleContact()">Contact</button> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Home from "./components/Home.vue";
 import Contact from "./components/Contact.vue";
 import ThreeVis from "./components/ThreeVis.vue";
 import Web from "./components/Web.vue";
@@ -59,11 +51,11 @@ import Web from "./components/Web.vue";
 export default {
   name: "app",
   data: () => ({
-    currentTab: "HelloWorld",
+    currentTab: "Home",
     backgroundHeight: null
   }),
   components: {
-    HelloWorld,
+    Home,
     Contact,
     ThreeVis,
     Web
@@ -158,6 +150,12 @@ button:focus {
 }
 </style>
 <style scoped>
+.name {
+  display: block;
+  position: fixed;
+  left: 10px;
+  z-index: 1;
+}
 .toolbar {
   display: inline-flex;
   justify-content: flex-end;
@@ -171,7 +169,6 @@ button:focus {
 .toolbar > span {
   padding: 8px;
   width: 100px;
-  /* margin: 10px; */
   text-align: center;
 }
 .toolbar > span:hover {
@@ -258,6 +255,9 @@ button:focus {
   }
   #xsmallSplash {
     display: block;
+  }
+  .name {
+    display: none;
   }
 }
 @media (min-width: 800px) {
