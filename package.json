@@ -9,6 +9,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
     "core-js": "^2.6.11",
+    "prerender-spa-plugin": "^3.4.0",
     "three": "^0.103.0",
     "three-gltf-loader": "^1.111.0",
     "three-orbitcontrols": "^2.110.3",
