@@ -5,35 +5,49 @@
       <div class="row">
         <div class="column" >
           <div v-for="(vector, i) in vectorImgs[0]">
-            <img :src="vector.src" style="width:100%" :alt="vector.alt" :id="vector.id" @click="toggleModal(vector)" @error="fallbackImg(vector)"/>
+            <picture>
+              <source type="image/webp" :srcset="vector.src">
+              <img :src="vector.fallback" style="width:100%" :alt="vector.alt" @click="toggleModal(vector)">
+            </picture>
           </div>
         </div>
         <div class="column">
           <div v-for="(vector, i) in vectorImgs[1]">
-            <img :src="vector.src" style="width:100%" :alt="vector.alt" :id="vector.id" @click="toggleModal(vector)"  @error="fallbackImg(vector)"/>
+            <picture>
+              <source type="image/webp" :srcset="vector.src">
+              <img :src="vector.fallback" style="width:100%" :alt="vector.alt" @click="toggleModal(vector)">
+            </picture>
           </div>
         </div>
       </div>
     </div>
     <div class="container">
-      <h2>product Vis</h2>
+      <h2>Renders</h2>
       <div class="row">
         <div class="column" >
           <div v-for="(render, i) in renderImgs[0]">
-            <img :src="render.src" style="width:100%" :alt="render.alt" :id="render.id" @click="toggleModal(render)"  @error="fallbackImg(render)"/>
+            <picture>
+              <source type="image/webp" :srcset="render.src">
+              <img :src="render.fallback" style="width:100%" :alt="render.alt" @click="toggleModal(render)">
+            </picture>
           </div>
         </div>
         <div class="column">
           <div v-for="(render, i) in renderImgs[1]">
-            <img :src="render.src" style="width:100%" :alt="render.alt" :id="render.id" @click="toggleModal(render)"  @error="fallbackImg(render)"/>
+            <picture>
+              <source type="image/webp" :srcset="render.src">
+              <img :src="render.fallback" style="width:100%" :alt="render.alt" @click="toggleModal(render)">
+            </picture>
           </div>
         </div>
       </div>
     </div>
-    <div id="imgModal" class="modal">
-
+    <div id="modalCanvas" class="modal">
       <!-- Modal Content (The Image) -->
-      <img class="modal-content" id="img01">
+      <picture >
+        <source type="image/webp" :srcset="modalsrc">
+        <img  id="modalFallback" class="modal-content" :src="modalFallback">
+      </picture>
 
       <!-- Modal Caption (Image Text) -->
       <div id="caption"></div>
@@ -44,7 +58,8 @@
 export default {
   name: "gallery",
   data: () => ({
-    imgError: false,
+    modalsrc: undefined,
+    modalFallback: undefined,
     vectorImgs: [
       [
         {
@@ -140,37 +155,30 @@ export default {
           fallback: require("@/assets/render_black.jpg")
         },
         {
-          src: require("@/assets/Bottle_Render.webp"),
-          alt: "glass bottle with label",
-          id: "glass-bottle",
-          fallback: require("@/assets/Bottle_Render.jpg")
+          src: require("@/assets/Water_Cup.webp"),
+          alt: "water glass",
+          id: "glass-water",
+          fallback: require("@/assets/Water_Cup.png")
         }
       ]
     ]
   }),
   methods: {
     toggleModal(image) {
-      var modal = document.getElementById("imgModal");
+      var modal = document.getElementById("modalCanvas");
 
       // Get the image and insert it inside the modal - use its "alt" text as a caption
       var img = document.getElementById(image.id);
-      var modalImg = document.getElementById("img01");
       var captionText = document.getElementById("caption");
+
       modal.style.display = "block";
-      if (this.imgError) {
-        modalImg.src = image.fallback
-      } else {
-        modalImg.src = image.src;
-      }
+      this.modalsrc = image.src;
+      this.modalFallback = image.fallback
       captionText.innerHTML = image.alt;
 
       modal.onclick = function() {
         modal.style.display = "none";
       }
-    },
-    onImageError(image) {
-      this.imgError = true;
-      this.$refs.img.src = image.fallback;
     }
   }
 };
@@ -218,6 +226,8 @@ body {
   box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
 }
 
+
+
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
   .container {
@@ -256,8 +266,7 @@ body {
 .modal-content {
   margin: auto;
   display: block;
-  max-width: 700px;
-  max-height: 90%;
+  max-width: 100%;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -283,28 +292,4 @@ body {
   to {transform:scale(1)}
 }
 
-/* The Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
-  .modal-content {
-    width: 100%;
-  }
-}
 </style>

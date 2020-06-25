@@ -4,7 +4,7 @@
     <h2> Visual Designer</h2>
     <h3>Vector &bull; 3D &bull; Web</h3>
     <div class="row">
-      <button @click="galleryScroll()" @hover="setHoverState()" class="button">CHECK OUT SOME SAMPLES</button>
+      <button @click="galleryScroll()" class="button">CHECK OUT SOME SAMPLES</button>
     </div>
     <div class="arrow">
         <span></span>
@@ -20,9 +20,6 @@ import Gallery from "./Gallery.vue";
 export default {
   name: 'Home',
   methods: {
-    setHoverState() {
-      // document.getElementsByClassName()
-    },
     galleryScroll() {
       var element = document.getElementById("gallery");
       element.scrollIntoView({behavior: "smooth"});
@@ -143,46 +140,4 @@ a {
         transform: rotate(45deg) translate(20px,20px);
     }
 }
-
-/* .star {
-  position: absolute;
-  left:-100px;
-  animation: star-shoot 8s linear infinite;
-  animation-delay: 5s;
-  z-index: -1;
-  overflow: clip;
-}
-@keyframes star-shoot {
-  0%{
-    opacity: 1;
-  }
-  25%{
-    left:-100px;
-    top:0;
-    opacity: 1;
-  }
-  40%{
-    left:100%;
-    top: 300px;
-    opacity: 0;
-  }
-  70%{
-    left:100px;
-    top:-100px;
-    opacity: 0;
-  }
-  75%{
-    opacity: 1;
-  }
-  85%{
-    left:100%;
-    top: 200px;
-    opacity: 0;
-  }
-  100%{
-    left:-100px;
-    top:0;
-    opacity: 0;
-  }
-} */
 </style>

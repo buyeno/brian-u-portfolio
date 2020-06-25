@@ -3,8 +3,8 @@
     <div id="container"></div>
     <div id="buttons-container">
       <div v-for="(model, i) in models">
-      <button class="button" @click="toggleLayer(i), model=i ">{{model.name}}</button>
-    </div>
+        <button class="button" @click="toggleLayer(i), model=i ">{{model.name}}</button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,12 +29,6 @@ export default {
           model: "Textured_Glasses.glb",
           scale: 10,
           group: undefined
-        },
-        {
-          name: "Bottle",
-          model: "Thick_Lines.glb",
-          scale: 20,
-          group: undefined
         }
       ],
       navHeight: 30,
@@ -55,9 +49,7 @@ export default {
       let container = document.getElementById("container");
 
       this.scene = new THREE.Scene();
-      // this.scene.background = new THREE.Color(0xCCCCCC)
 
-      // this.scene.background = background;
       this.camera = new THREE.PerspectiveCamera(
         45,
         container.clientWidth / container.clientHeight,
@@ -65,13 +57,6 @@ export default {
         1000
       );
       this.camera.position.z = 20;
-      // can add up to 20 layers to toggle hide/show
-      // this.camera.layers.enable(1); // model
-      // this.camera.layers.disable(1); // routes
-      // this.camera.layers.disable(2); // routes
-      // this.camera.layers.disable(3); // tics
-      // this.camera.layers.disable(4);
-      // this.camera.layers.disable(5);
       this.camera.target = new THREE.Vector3();
 
 
@@ -110,38 +95,9 @@ export default {
       topLight.position.y=5
       this.scene.add(topLight)
 
-      // for raycasting
-      // let geometry = new THREE.BufferGeometry()
-      // geometry.setFromPoints([ new THREE.Vector3(), new THREE.Vector3() ])
       this.loadModel();
-      // this.raycaster = new THREE.Raycaster();
-      // this.mouseVector = new THREE.Vector2();
-      //
+
       window.addEventListener("resize", this.onWindowResize, false);
-      // container.addEventListener("mousemove", this.onDocumentMouseMove, false);
-      // container.addEventListener("mouseup", this.onDocumentMouseclick, false);
-      // window.addEventListener("mousedown", () => {
-      //   this.moved = false;
-      // });
-      // window.addEventListener("touchstart", () => {
-      //   this.moved = false;
-      // });
-      // container.addEventListener("touchend", this.onDocumentTouchEnd, false);
-      // this.controls.addEventListener("change", () => {
-      //   this.moved = true;
-      //   this.camMoved = true;
-      //   if (this.inBounds == false){
-      //     this.controls.enabled = false;
-      //     this.controls.target.copy(this.lastTarget);
-      //     this.controls.enabled = true;
-      //   }
-      // });
-      // document.addEventListener("fullscreenchange", () => {
-      //   const element = document.fullscreenElement;
-      //   if (!element) {
-      //     this.fullscreenView = false;
-      //   }
-      // });
       this.onWindowResize();
     },
     animate: function() {
@@ -167,7 +123,6 @@ export default {
     async loadModel() {
       let loader = new GLTFLoader();
 
-      // const model = await this.$axios.$get(this.crag.crag.model.link);
       for (let i in this.models) {
         this.models[i].group = new THREE.Group();
         loader.load(

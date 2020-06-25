@@ -4,36 +4,48 @@
       Brian Uyeno Designs
     </div>
     <div id="navbar" class="toolbar">
-      <span @click="(currentTab = 'Home'), setActiveClass()">
+      <span @click="(currentTab = 'Home'), setActiveClass(0)" :class="active[0]">
         Gallery
       </span>
-      <span @click="(currentTab = 'ThreeVis'), setActiveClass()">
+      <span @click="(currentTab = 'ThreeVis'), setActiveClass(1)" :class="active[1]">
         3D Viewer
       </span>
-      <span @click="(currentTab = 'Contact'), setActiveClass()">
+      <span @click="(currentTab = 'Contact'), setActiveClass(2)" :class="active[2]">
         Contact
       </span>
     </div>
     <div id="background">
-      <img
-        id="splash"
-        class="splash"
-        src="./assets/Starry_Night.webp"
-        alt="night silhouette splash image"
-      />
-      <img
-        id="xsmallSplash"
-        class="splash"
-        src="./assets/Starry_Night_xs.webp"
-        alt="night silhouette splash image"
-      />
-      <img
-        id="smallSplash"
-        class="splash"
-        src="./assets/Night_Silhouette_small.webp"
-        alt="night silhouette splash image"
-      />
+      <picture>
+        <source type="image/webp" srcset="./assets/Starry_Night.webp">
+        <img
+          id="splash"
+          class="splash"
+          src="./assets/Starry_Night.jpg"
+          alt="night silhouette splash image"
+        />
+      </picture>
+      <picture>
+        <source type="image/webp" srcset="./assets/Starry_Night_xs.webp">
+        <img
+          id="xsmallSplash"
+          class="splash"
+          src="./assets/Starry_Night_xs.jpg"
+          alt="night silhouette splash image"
+        />
+      </picture>
+      <picture>
+        <source type="image/webp" srcset="./assets/Night_Silhouette_small.webp">
+        <img
+          id="smallSplash"
+          class="splash"
+          src="./assets/Night_Silhouette_small.jpg"
+          alt="night silhouette splash image"
+        />
+      </picture>
     </div>
+    <!-- <svg class="star" height="100" width="100">
+      <circle cx="10" cy="10" r="5" fill="white" />
+    </svg> -->
     <transition name="tab" mode="out-in">
       <keep-alive>
         <component id="content" :is="currentTab" />
@@ -52,7 +64,29 @@ export default {
   name: "app",
   data: () => ({
     currentTab: "Home",
-    backgroundHeight: null
+    active: [
+      "active",
+      "",
+      ""
+    ],
+    backgroundHeight: null,
+    navButtons: [
+      {
+        text: "Gallery",
+        tab: "Home",
+        active: true
+      },
+      {
+        text: "3D Viewer",
+        tab: "ThreeVis",
+        active: true
+      },
+      {
+        text: "Contact",
+        tab: "Contact",
+        active: true
+      }
+    ]
   }),
   components: {
     Home,
@@ -61,14 +95,6 @@ export default {
     Web
   },
   methods: {
-    toggleContact() {
-      const panel = document.getElementById("contact-panel");
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-      } else {
-        panel.style.display = "block";
-      }
-    },
     setBackgroundHeight() {
       let background = document.getElementById("background");
       background.style.height = window.innerHeight - 12 + "px";
@@ -84,9 +110,16 @@ export default {
         nav.style = "background-color: rgba(0, 0, 0, 0);";
       }
     },
-    setActiveClass() {
+    setActiveClass(i) {
       var element = document.getElementById("background");
       element.scrollIntoView({ behavior: "smooth" });
+      for (let id in this.active) {
+        if (id == i) {
+          this.active[id] = "active"
+        } else {
+          this.active[id] = ""
+        }
+      }
     },
     init() {
       this.setBackgroundHeight();
@@ -175,39 +208,8 @@ button:focus {
   background-color: rgba(255, 255, 255, 0.19);
   cursor: pointer;
 }
-/* Style the buttons that are used to open and close the accordion panel */
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  max-height: 100%;
-  text-align: center;
-  border: none;
-  outline: none;
-  transition: 0.4s;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-}
-
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active,
-.accordion:hover {
-  background-color: #ccc;
-}
-
-/* Style the accordion panel. Note: hidden by default */
-.panel {
-  padding: 0 18px;
-  background-color: white;
-  display: none;
-  width: 100%;
-  overflow: hidden;
-  position: fixed;
-  left: 0;
-  bottom: 40px;
+.active {
+  border-bottom: solid;
 }
 #background {
   position: absolute;
