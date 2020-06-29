@@ -1,4 +1,6 @@
-# brian-u-profile
+# Brian U Design
+
+My portfolio site to showcase my digital artwork. Built on Vue and ThreeJS frameworks.
 
 ## Project setup
 ```
@@ -14,16 +16,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

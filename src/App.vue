@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="name" class="name">
-      Brian Uyeno Designs
+      Brian Uyeno Design
     </div>
     <div id="navbar" class="toolbar">
       <span @click="(currentTab = 'Home'), setActiveClass(0)" :class="active[0]">
