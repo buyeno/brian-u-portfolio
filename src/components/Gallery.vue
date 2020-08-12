@@ -129,10 +129,10 @@ export default {
           fallback: require("@/assets/Thick_Lines.jpg")
         },
         {
-          src: require("@/assets/Thin_Lines.webp"),
-          alt: "twist glass with thin lines render",
+          src: require("@/assets/mic.webp"),
+          alt: "microphone render",
           id: "thin-lines",
-          fallback: require("@/assets/Thin_Lines.jpg")
+          fallback: require("@/assets/mic.png")
         },
       ],
       [

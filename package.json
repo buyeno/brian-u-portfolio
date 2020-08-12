@@ -7,7 +7,6 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.1",
     "core-js": "^2.6.11",
     "three": "^0.103.0",
     "vue": "^2.6.11"

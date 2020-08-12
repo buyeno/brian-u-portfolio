@@ -29,6 +29,12 @@ export default {
           model: "Textured_Glasses.glb",
           scale: 10,
           group: undefined
+        },
+        {
+          name: "Microphone",
+          model: "mic.glb",
+          scale: 3,
+          group: undefined
         }
       ],
       navHeight: 30,
@@ -71,24 +77,25 @@ export default {
       this.controls.maxDistance = 30;
 
       this.scene.add(new THREE.AmbientLight(0x404040, 3));
-      let frontLeftLight = new THREE.PointLight();
-      frontLeftLight.position.z=1
 
-      frontLeftLight.position.x=-1
+      let frontLeftLight = new THREE.PointLight();
+      frontLeftLight.position.z=3
+      frontLeftLight.position.x=-3
       this.scene.add(frontLeftLight)
 
       let frontRightLight = new THREE.PointLight();
-      frontRightLight.position.z=1
-
-      frontRightLight.position.x=1
+      frontRightLight.position.z=3
+      frontRightLight.position.x=3
       this.scene.add(frontRightLight)
 
       let leftLight = new THREE.PointLight();
       leftLight.position.x=10
+      leftLight.position.z=-5
       this.scene.add(leftLight)
 
       let rightLight = new THREE.PointLight();
       rightLight.position.x=-10
+      rightLight.position.z=-5
       this.scene.add(rightLight)
 
       let topLight = new THREE.PointLight();
