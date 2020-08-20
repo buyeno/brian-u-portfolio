@@ -107,12 +107,13 @@ export default {
       let background = document.getElementById('background');
       background.style.height = window.innerHeight - 12 + 'px';
       this.backgroundHeight = background.clientHeight;
+      this.checkNavOpacity();
     },
     checkNavOpacity() {
       let scrollTop = window.pageYOffset;
       let nav = document.getElementById('navbar');
       // get scroll position in px
-      if (scrollTop > this.backgroundHeight) {
+      if (scrollTop > this.backgroundHeight || window.innerWidth < 1100) {
         nav.style = 'background-color: rgba(0, 0, 0, 1);';
       } else {
         nav.style = 'background-color: rgba(0, 0, 0, 0);';
@@ -259,6 +260,11 @@ button:focus {
   }
   #smallSplash {
     display: block;
+  }
+}
+@media (max-width: 1100px) {
+  #navbar {
+    background-color: rgba(0, 0, 0, 1);
   }
 }
 
