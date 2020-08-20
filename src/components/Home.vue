@@ -1,34 +1,36 @@
 <template>
   <div>
-    <h1>Brian Uyeno</h1>
-    <h2> Visual Designer</h2>
+    <h1 id="home-container">Brian Uyeno</h1>
+    <h2>Visual Designer</h2>
     <h3>Vector &bull; 3D &bull; Web</h3>
     <div class="row">
-      <button @click="galleryScroll()" class="button">CHECK OUT SOME SAMPLES</button>
+      <button @click="galleryScroll()" class="button">
+        CHECK OUT SOME SAMPLES
+      </button>
     </div>
     <div class="arrow">
-        <span></span>
-        <span></span>
-        <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-    <Gallery id="gallery"/>
+    <Gallery id="gallery" />
   </div>
 </template>
 
 <script>
-import Gallery from "./Gallery.vue";
+import Gallery from './Gallery.vue';
 export default {
   name: 'Home',
   methods: {
     galleryScroll() {
-      var element = document.getElementById("gallery");
-      element.scrollIntoView({behavior: "smooth"});
-    }
+      var element = document.getElementById('gallery');
+      element.scrollIntoView({ behavior: 'smooth' });
+    },
   },
   components: {
-    Gallery
-  }
-}
+    Gallery,
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -39,7 +41,6 @@ export default {
   padding: 5em;
   justify-content: center;
 }
-
 
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
@@ -104,40 +105,45 @@ a {
   color: #42b983;
 }
 
-.arrow{
-    position: absolute;
-    justify-content: center;
-    top: 85%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+.arrow {
+  position: absolute;
+  justify-content: center;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.arrow span{
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-bottom: 5px solid #ffffff;
-    border-right: 5px solid #ffffff;
-    transform: rotate(45deg);
-    /* margin: -10px; */
-    animation: animate 2s infinite;
+.arrow span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 5px solid #ffffff;
+  border-right: 5px solid #ffffff;
+  transform: rotate(45deg);
+  /* margin: -10px; */
+  animation: animate 2s infinite;
 }
-.arrow span:nth-child(2){
-    animation-delay: -0.2s;
+.arrow span:nth-child(2) {
+  animation-delay: -0.2s;
 }
-.arrow span:nth-child(3){
-    animation-delay: -0.4s;
+.arrow span:nth-child(3) {
+  animation-delay: -0.4s;
 }
 @keyframes animate {
-    0%{
-        opacity: 0;
-        transform: rotate(45deg) translate(-20px,-20px);
-    }
-    50%{
-        opacity: 1;
-    }
-    100%{
-        opacity: 0;
-        transform: rotate(45deg) translate(20px,20px);
-    }
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(20px, 20px);
+  }
+}
+</style>
+<style scoped>
+#home-container {
+  padding-top: 30px;
 }
 </style>

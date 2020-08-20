@@ -4,19 +4,28 @@
       Brian Uyeno Design
     </div>
     <div id="navbar" class="toolbar">
-      <span @click="(currentTab = 'Home'), setActiveClass(0)" :class="active[0]">
+      <span
+        @click="(currentTab = 'Home'), setActiveClass(0)"
+        :class="active[0]"
+      >
         Gallery
       </span>
-      <span @click="(currentTab = 'ThreeVis'), setActiveClass(1)" :class="active[1]">
+      <span
+        @click="(currentTab = 'ThreeVis'), setActiveClass(1)"
+        :class="active[1]"
+      >
         3D Viewer
       </span>
-      <span @click="(currentTab = 'Contact'), setActiveClass(2)" :class="active[2]">
+      <span
+        @click="(currentTab = 'Contact'), setActiveClass(2)"
+        :class="active[2]"
+      >
         Contact
       </span>
     </div>
     <div id="background">
       <picture>
-        <source type="image/webp" srcset="./assets/Starry_Night.webp">
+        <source type="image/webp" srcset="./assets/Starry_Night.webp" />
         <img
           id="splash"
           class="splash"
@@ -25,7 +34,7 @@
         />
       </picture>
       <picture>
-        <source type="image/webp" srcset="./assets/Starry_Night_xs.webp">
+        <source type="image/webp" srcset="./assets/Starry_Night_xs.webp" />
         <img
           id="xsmallSplash"
           class="splash"
@@ -34,7 +43,10 @@
         />
       </picture>
       <picture>
-        <source type="image/webp" srcset="./assets/Night_Silhouette_small.webp">
+        <source
+          type="image/webp"
+          srcset="./assets/Night_Silhouette_small.webp"
+        />
         <img
           id="smallSplash"
           class="splash"
@@ -55,98 +67,94 @@
 </template>
 
 <script>
-import Home from "./components/Home.vue";
-import Contact from "./components/Contact.vue";
-import ThreeVis from "./components/ThreeVis.vue";
-import Web from "./components/Web.vue";
+import Home from './components/Home.vue';
+import Contact from './components/Contact.vue';
+import ThreeVis from './components/ThreeVis.vue';
+import Web from './components/Web.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   data: () => ({
-    currentTab: "Home",
-    active: [
-      "active",
-      "",
-      ""
-    ],
+    currentTab: 'Home',
+    active: ['active', '', ''],
     backgroundHeight: null,
     navButtons: [
       {
-        text: "Gallery",
-        tab: "Home",
-        active: true
+        text: 'Gallery',
+        tab: 'Home',
+        active: true,
       },
       {
-        text: "3D Viewer",
-        tab: "ThreeVis",
-        active: true
+        text: '3D Viewer',
+        tab: 'ThreeVis',
+        active: true,
       },
       {
-        text: "Contact",
-        tab: "Contact",
-        active: true
-      }
-    ]
+        text: 'Contact',
+        tab: 'Contact',
+        active: true,
+      },
+    ],
   }),
   components: {
     Home,
     Contact,
     ThreeVis,
-    Web
+    Web,
   },
   methods: {
     setBackgroundHeight() {
-      let background = document.getElementById("background");
-      background.style.height = window.innerHeight - 12 + "px";
+      let background = document.getElementById('background');
+      background.style.height = window.innerHeight - 12 + 'px';
       this.backgroundHeight = background.clientHeight;
     },
     checkNavOpacity() {
       let scrollTop = window.pageYOffset;
-      let nav = document.getElementById("navbar");
+      let nav = document.getElementById('navbar');
       // get scroll position in px
       if (scrollTop > this.backgroundHeight) {
-        nav.style = "background-color: rgba(0, 0, 0, 1);";
+        nav.style = 'background-color: rgba(0, 0, 0, 1);';
       } else {
-        nav.style = "background-color: rgba(0, 0, 0, 0);";
+        nav.style = 'background-color: rgba(0, 0, 0, 0);';
       }
     },
     setActiveClass(i) {
-      var element = document.getElementById("background");
-      element.scrollIntoView({ behavior: "smooth" });
+      var element = document.getElementById('background');
+      element.scrollIntoView({ behavior: 'smooth' });
       for (let id in this.active) {
         if (id == i) {
-          this.active[id] = "active"
+          this.active[id] = 'active';
         } else {
-          this.active[id] = ""
+          this.active[id] = '';
         }
       }
     },
     init() {
       this.setBackgroundHeight();
-      window.addEventListener("resize", this.setBackgroundHeight, false);
-      window.addEventListener("scroll", this.checkNavOpacity, false);
-    }
+      window.addEventListener('resize', this.setBackgroundHeight, false);
+      window.addEventListener('scroll', this.checkNavOpacity, false);
+    },
   },
   mounted() {
     this.init();
-  }
+  },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Poppins|Dosis");
+@import url('https://fonts.googleapis.com/css?family=Poppins|Dosis');
 body {
   background-color: #000000;
 }
 #app {
-  font-family: "Dosis", sans-serif;
+  font-family: 'Dosis', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #ffffff;
 }
 #content {
-  padding-top: 60px;
+  padding-top: 30px;
   /* padding-bottom: 30px; */
 }
 body {
@@ -167,6 +175,12 @@ button:focus {
   background-color: transparent;
   border-radius: 1em;
   border: 2px solid #ffffff;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .tab-enter {
   opacity: 0;
@@ -203,6 +217,7 @@ button:focus {
   padding: 8px;
   width: 100px;
   text-align: center;
+  user-select: none;
 }
 .toolbar > span:hover {
   background-color: rgba(255, 255, 255, 0.19);
