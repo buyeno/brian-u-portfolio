@@ -202,7 +202,7 @@ button:focus {
   display: block;
   position: fixed;
   left: 10px;
-  z-index: 1;
+  z-index: 2;
 }
 .toolbar {
   display: inline-flex;
@@ -265,6 +265,7 @@ button:focus {
 @media (max-width: 1100px) {
   #navbar {
     background-color: rgba(0, 0, 0, 1);
+    z-index: 1;
   }
 }
 
