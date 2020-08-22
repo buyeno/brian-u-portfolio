@@ -392,8 +392,8 @@ export default {
           annotationElement.style.borderColor = '#3dc642';
         }
 
-        if (annotationElement.clientWidth + 100 > canvas.width) {
-          annotation.style.top = 0;
+        if (canvas.width < 400) {
+          annotation.style.top = 39;
           annotation.style.left = 0;
           annotation.style.width = '100%';
         } else if (canvas.width - vector.x > annotationElement.clientWidth) {
@@ -524,7 +524,7 @@ export default {
 .annotation {
   position: absolute;
   user-select: none;
-  top: 0px;
+  top: 39px;
   left: -500px;
   color: #ffffff;
   text-align: center;
@@ -532,5 +532,11 @@ export default {
   border: 2px solid white;
   border-radius: 5px;
   padding: 5px;
+  z-index: 2;
+}
+@media (max-width: 400px) {
+  .annotation {
+    border: none;
+  }
 }
 </style>
