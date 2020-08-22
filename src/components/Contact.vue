@@ -2,7 +2,7 @@
   <div>
     <div id="text-container">
       <h2>Hello!</h2>
-      <p>
+      <p class="justify-text">
         I'm a visual designer that will provide you with everything you need for
         well-designed products and visualizations. I will work with you through
         all of your visual design needs whether that is modeling, renders,
@@ -10,7 +10,7 @@
         show your product to customers in the best fashion.
       </p>
       <div id="help-list">
-        <ul id="help-list">
+        <ul>
           <li>3D Modeling</li>
           <li>Photorealistic Renders</li>
           <li>Texturing</li>
@@ -74,19 +74,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-#text-container {
-  width: 100%;
-  display: inline-block;
-  justify-content: center;
-  max-width: 800px;
-  font-size: 1.3em;
-}
-#help-list {
-  justify-content: center;
-  display: inline-flex;
-  flex-direction: column;
-  text-align: justify;
-}
 .form-submission {
   width: 100%;
   max-width: 800px;
@@ -116,6 +103,27 @@ textarea {
 label {
   margin: 20px;
 }
+/* info */
+#text-container {
+  width: 80%;
+  display: inline-block;
+  justify-content: center;
+  max-width: 800px;
+  font-size: 1.3em;
+}
+#help-list {
+  justify-content: center;
+  display: inline-flex;
+  flex-direction: column;
+  text-align: justify;
+}
+.justify-text {
+  text-align: justify;
+}
+li {
+  list-style-type: none;
+}
+
 /* social buttons */
 .social-links {
 }

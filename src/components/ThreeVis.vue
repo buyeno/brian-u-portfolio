@@ -183,6 +183,10 @@ export default {
       container.addEventListener('mousemove', this.onDocumentMouseMove, false);
       container.addEventListener('mouseup', this.onDocumentMouseclick, false);
       container.addEventListener('touchend', this.onDocumentTouchEnd, false);
+      document.addEventListener(
+        'visibilitychange',
+        this.onDocumentVisibilityChange
+      );
 
       window.addEventListener('mousedown', () => {
         this.moved = false;
@@ -348,7 +352,7 @@ export default {
         }
         this.selectedObject = null;
       }
-      let intersects = this.getIntersects(event.layerX, event.layerY + 50);
+      let intersects = this.getIntersects(event.pageX, event.pageY);
 
       if (intersects.length > 0) {
         let res = intersects.filter(function(res) {
@@ -428,7 +432,7 @@ export default {
             (x) => x.id === this.selectedObject.id
           );
           this.activePos = this.selectedPos;
-          this.updateAnnotationLocation();
+          setTimeout(this.updateAnnotationLocation, 100);
         }
       } else {
         this.selectedObject = undefined;
@@ -463,6 +467,13 @@ export default {
           this.models[id].group.visible = false;
           btn.classList.remove('active');
         }
+      }
+    },
+    onDocumentVisibilityChange() {
+      if (document.visibilityState === 'hidden') {
+        this.play = false;
+      } else {
+        this.play = true;
       }
     },
   },

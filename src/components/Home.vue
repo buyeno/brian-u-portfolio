@@ -106,10 +106,7 @@ a {
 }
 
 .arrow {
-  position: absolute;
-  justify-content: center;
-  top: 85%;
-  left: 50%;
+  display: inline-block;
   transform: translate(-50%, -50%);
 }
 .arrow span {
@@ -119,7 +116,8 @@ a {
   border-bottom: 5px solid #ffffff;
   border-right: 5px solid #ffffff;
   transform: rotate(45deg);
-  /* margin: -10px; */
+  margin-left: -10px;
+  margin-right: -10px;
   animation: animate 2s infinite;
 }
 .arrow span:nth-child(2) {

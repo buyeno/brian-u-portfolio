@@ -3,19 +3,29 @@
     <div class="container">
       <h2>Vector Illustration</h2>
       <div class="row">
-        <div class="column" >
-          <div v-for="(vector, i) in vectorImgs[0]">
+        <div class="column">
+          <div v-for="(vector, i) in vectorImgs[0]" :key="i">
             <picture>
-              <source type="image/webp" :srcset="vector.src">
-              <img :src="vector.fallback" style="width:100%" :alt="vector.alt" @click="toggleModal(vector)">
+              <source type="image/webp" :srcset="vector.src" />
+              <img
+                :src="vector.fallback"
+                style="width:100%"
+                :alt="vector.alt"
+                @click="toggleModal(vector)"
+              />
             </picture>
           </div>
         </div>
         <div class="column">
-          <div v-for="(vector, i) in vectorImgs[1]">
+          <div v-for="(vector, i) in vectorImgs[1]" :key="i">
             <picture>
-              <source type="image/webp" :srcset="vector.src">
-              <img :src="vector.fallback" style="width:100%" :alt="vector.alt" @click="toggleModal(vector)">
+              <source type="image/webp" :srcset="vector.src" />
+              <img
+                :src="vector.fallback"
+                style="width:100%"
+                :alt="vector.alt"
+                @click="toggleModal(vector)"
+              />
             </picture>
           </div>
         </div>
@@ -24,19 +34,29 @@
     <div class="container">
       <h2>Renders</h2>
       <div class="row">
-        <div class="column" >
-          <div v-for="(render, i) in renderImgs[0]">
+        <div class="column">
+          <div v-for="(render, i) in renderImgs[0]" :key="i">
             <picture>
-              <source type="image/webp" :srcset="render.src">
-              <img :src="render.fallback" style="width:100%" :alt="render.alt" @click="toggleModal(render)">
+              <source type="image/webp" :srcset="render.src" />
+              <img
+                :src="render.fallback"
+                style="width:100%"
+                :alt="render.alt"
+                @click="toggleModal(render)"
+              />
             </picture>
           </div>
         </div>
         <div class="column">
-          <div v-for="(render, i) in renderImgs[1]">
+          <div v-for="(render, i) in renderImgs[1]" :key="i">
             <picture>
-              <source type="image/webp" :srcset="render.src">
-              <img :src="render.fallback" style="width:100%" :alt="render.alt" @click="toggleModal(render)">
+              <source type="image/webp" :srcset="render.src" />
+              <img
+                :src="render.fallback"
+                style="width:100%"
+                :alt="render.alt"
+                @click="toggleModal(render)"
+              />
             </picture>
           </div>
         </div>
@@ -44,9 +64,9 @@
     </div>
     <div id="modalCanvas" class="modal">
       <!-- Modal Content (The Image) -->
-      <picture >
-        <source type="image/webp" :srcset="modalsrc">
-        <img  id="modalFallback" class="modal-content" :src="modalFallback">
+      <picture>
+        <source type="image/webp" :srcset="modalsrc" />
+        <img id="modalFallback" class="modal-content" :src="modalFallback" />
       </picture>
 
       <!-- Modal Caption (Image Text) -->
@@ -56,137 +76,131 @@
 </template>
 <script>
 export default {
-  name: "gallery",
+  name: 'gallery',
   data: () => ({
     modalsrc: undefined,
     modalFallback: undefined,
     vectorImgs: [
       [
         {
-          src: require("@/assets/Melon_Bike.webp"),
-          alt: "melon bike",
-          id: "melon-bike",
-          fallback: require("@/assets/Melon_Bike.png")
+          src: require('@/assets/Wine_Bottle_2d.webp'),
+          alt: 'vector drawn wine bottle',
+          id: 'wine-bottle',
+          fallback: require('@/assets/Wine_Bottle_2d.png'),
         },
         {
-          src: require("@/assets/DummSite.webp"),
-          alt: "responsive site example",
-          id: "dummy-site",
-          fallback: require("@/assets/DummSite.png")
+          src: require('@/assets/Melon_Bike.webp'),
+          alt: 'melon bike',
+          id: 'melon-bike',
+          fallback: require('@/assets/Melon_Bike.png'),
         },
         {
-          src: require("@/assets/Wine_Bottle_2d.webp"),
-          alt: "vector drawn wine bottle",
-          id: "wine-bottle",
-          fallback: require("@/assets/Wine_Bottle_2d.png")
+          src: require('@/assets/DummSite.webp'),
+          alt: 'responsive site example',
+          id: 'dummy-site',
+          fallback: require('@/assets/DummSite.png'),
         },
-        {
-          src: require("@/assets/Letter.webp"),
-          alt: "wax sealed letter",
-          id: "letter",
-          fallback: require("@/assets/Letter.png")
-        }
       ],
       [
         {
-          src: require("@/assets/Messy_Desk.webp"),
-          alt: "unorganized desk",
-          id: "unorganized-desk",
-          fallback: require("@/assets/Messy_Desk.png")
+          src: require('@/assets/glasses-mockup.webp'),
+          alt: 'mockup for glasses variety',
+          id: 'glasses-mockup',
+          fallback: require('@/assets/glasses-mockup.jpg'),
         },
         {
-          src: require("@/assets/Clean_Desk.webp"),
-          alt: "organized desk",
-          id: "organized-desk",
-          fallback: require("@/assets/Clean_Desk.png")
+          src: require('@/assets/bottles-mockup.webp'),
+          alt: 'mockup for glasses variety',
+          id: 'glasses-mockup',
+          fallback: require('@/assets/bottles-mockup.jpg'),
         },
         {
-          src: require("@/assets/ClimbAssist_Logo_Full.webp"),
-          alt: "logo for climb assist",
-          id: "climb-assist-logo",
-          fallback: require("@/assets/ClimbAssist_Logo_Full.png")
+          src: require('@/assets/Messy_Desk.webp'),
+          alt: 'unorganized desk',
+          id: 'unorganized-desk',
+          fallback: require('@/assets/Messy_Desk.png'),
         },
         {
-          src: require("@/assets/AtlasLogo.webp"),
-          alt: "logo for atlas",
-          id: "atlas-logo",
-          fallback: require("@/assets/AtlasLogo.png")
-        }
-      ]
+          src: require('@/assets/Clean_Desk.webp'),
+          alt: 'organized desk',
+          id: 'organized-desk',
+          fallback: require('@/assets/Clean_Desk.png'),
+        },
+      ],
     ],
     renderImgs: [
       [
         {
-          src: require("@/assets/Carabiner.webp"),
-          alt: "render of carabiner",
-          id: "carabiner",
-          fallback: require("@/assets/Carabiner.jpg")
+          src: require('@/assets/mic.webp'),
+          alt: 'microphone render',
+          id: 'thin-lines',
+          fallback: require('@/assets/mic.png'),
         },
         {
-          src: require("@/assets/Thick_Lines.webp"),
-          alt: "twist glass with thick lines render",
-          id: "thick-lines",
-          fallback: require("@/assets/Thick_Lines.jpg")
+          src: require('@/assets/Carabiner.webp'),
+          alt: 'render of carabiner',
+          id: 'carabiner',
+          fallback: require('@/assets/Carabiner.jpg'),
         },
         {
-          src: require("@/assets/mic.webp"),
-          alt: "microphone render",
-          id: "thin-lines",
-          fallback: require("@/assets/mic.png")
+          src: require('@/assets/Thick_Lines.webp'),
+          alt: 'twist glass with thick lines render',
+          id: 'thick-lines',
+          fallback: require('@/assets/Thick_Lines.jpg'),
         },
       ],
       [
         {
-          src: require("@/assets/render_textured.webp"),
-          alt: "textured glasses render",
-          id: "textured-glasses",
-          fallback: require("@/assets/render_textured.jpg")
+          src: require('@/assets/render_textured.webp'),
+          alt: 'textured glasses render',
+          id: 'textured-glasses',
+          fallback: require('@/assets/render_textured.jpg'),
         },
         {
-          src: require("@/assets/Render_Aviator.webp"),
-          alt: "aviator glasses render",
-          id: "aviator-glasses",
-          fallback: require("@/assets/Render_Aviator.jpg")
+          src: require('@/assets/Render_Aviator.webp'),
+          alt: 'aviator glasses render',
+          id: 'aviator-glasses',
+          fallback: require('@/assets/Render_Aviator.jpg'),
         },
         {
-          src: require("@/assets/render_black.webp"),
-          alt: "black frame glasses",
-          id: "black-glasses",
-          fallback: require("@/assets/render_black.jpg")
+          src: require('@/assets/render_black.webp'),
+          alt: 'black frame glasses',
+          id: 'black-glasses',
+          fallback: require('@/assets/render_black.jpg'),
         },
         {
-          src: require("@/assets/Water_Cup.webp"),
-          alt: "water glass",
-          id: "glass-water",
-          fallback: require("@/assets/Water_Cup.png")
-        }
-      ]
-    ]
+          src: require('@/assets/Water_Cup.webp'),
+          alt: 'water glass',
+          id: 'glass-water',
+          fallback: require('@/assets/Water_Cup.png'),
+        },
+      ],
+    ],
   }),
   methods: {
     toggleModal(image) {
-      var modal = document.getElementById("modalCanvas");
+      var modal = document.getElementById('modalCanvas');
 
       // Get the image and insert it inside the modal - use its "alt" text as a caption
       var img = document.getElementById(image.id);
-      var captionText = document.getElementById("caption");
+      var captionText = document.getElementById('caption');
 
-      modal.style.display = "block";
+      modal.style.display = 'block';
       this.modalsrc = image.src;
-      this.modalFallback = image.fallback
+      this.modalFallback = image.fallback;
       captionText.innerHTML = image.alt;
 
       modal.onclick = function() {
-        modal.style.display = "none";
-      }
-    }
-  }
+        modal.style.display = 'none';
+      };
+    },
+  },
 };
 </script>
 <style scoped>
 #gallery {
   margin-top: 300px;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -205,7 +219,7 @@ body {
 }
 .container {
   border-radius: 1em;
-  max-width:49%;
+  max-width: 49%;
   padding-top: 1em;
   margin-top: 2em;
 }
@@ -219,14 +233,13 @@ body {
   margin-top: 8px;
   margin-bottom: 8px;
   vertical-align: middle;
-  background-color: #B2B2B2;
+  background-color: #b2b2b2;
   border-radius: 1em;
 }
 .column img:hover {
-  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2),
+    0 6px 20px 0 rgba(255, 255, 255, 0.19);
 }
-
-
 
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
@@ -258,8 +271,8 @@ body {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
 }
 
 /* Modal Content (Image) */
@@ -282,14 +295,18 @@ body {
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content, #caption {
+.modal-content,
+#caption {
   animation-name: zoom;
   animation-duration: 0.6s;
 }
 
 @keyframes zoom {
-  from {transform:scale(0)}
-  to {transform:scale(1)}
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
-
 </style>
