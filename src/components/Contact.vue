@@ -6,16 +6,16 @@
         I'm a visual designer that will provide you with everything you need for
         well-designed products and visualizations. I will work with you through
         all of your visual design needs whether that is modeling, renders,
-        mockups, or web customizations. I am committed to helping you create and
-        show your product to customers in the best fashion.
+        illustrations, or web customizations. I am committed to helping you
+        create and showcase your product in the best fashion.
       </p>
       <div id="help-list">
         <ul>
-          <li>3D Modeling</li>
-          <li>Photorealistic Renders</li>
-          <li>Texturing</li>
-          <li>Vector mockups</li>
-          <li>Custom 3D Viewer</li>
+          <li>3D Modeling and Texturing</li>
+          <li>Renders</li>
+          <li>Animation</li>
+          <li>Illustration</li>
+          <li>Custom 3D Web Viewer</li>
           <li>Front End Web Development</li>
         </ul>
       </div>

@@ -1,7 +1,15 @@
 <template>
   <div id="gallery">
     <div class="container">
-      <h2>Vector Illustration</h2>
+      <h2>Animation</h2>
+      <div class="row">
+        <div v-for="(video, i) in videos" :key="i">
+          <video autoplay muted loop :id="video.id">
+            <source :src="video.src" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+      <h2>Illustration</h2>
       <div class="row">
         <div class="column">
           <div v-for="(vector, i) in vectorImgs[0]" :key="i">
@@ -32,7 +40,7 @@
       </div>
     </div>
     <div class="container">
-      <h2>Renders</h2>
+      <h2>Render</h2>
       <div class="row">
         <div class="column">
           <div v-for="(render, i) in renderImgs[0]" :key="i">
@@ -62,6 +70,7 @@
         </div>
       </div>
     </div>
+    <div class="container"></div>
     <div id="modalCanvas" class="modal">
       <!-- Modal Content (The Image) -->
       <picture>
@@ -88,18 +97,18 @@ export default {
           id: 'wine-bottle',
           fallback: require('@/assets/Wine_Bottle_2d.png'),
         },
-        {
-          src: require('@/assets/Melon_Bike.webp'),
-          alt: 'melon bike',
-          id: 'melon-bike',
-          fallback: require('@/assets/Melon_Bike.png'),
-        },
-        {
-          src: require('@/assets/DummSite.webp'),
-          alt: 'responsive site example',
-          id: 'dummy-site',
-          fallback: require('@/assets/DummSite.png'),
-        },
+        // {
+        //   src: require('@/assets/Melon_Bike.webp'),
+        //   alt: 'melon bike',
+        //   id: 'melon-bike',
+        //   fallback: require('@/assets/Melon_Bike.png'),
+        // },
+        // {
+        //   src: require('@/assets/DummSite.webp'),
+        //   alt: 'responsive site example',
+        //   id: 'dummy-site',
+        //   fallback: require('@/assets/DummSite.png'),
+        // },
       ],
       [
         {
@@ -114,18 +123,18 @@ export default {
           id: 'glasses-mockup',
           fallback: require('@/assets/bottles-mockup.jpg'),
         },
-        {
-          src: require('@/assets/Messy_Desk.webp'),
-          alt: 'unorganized desk',
-          id: 'unorganized-desk',
-          fallback: require('@/assets/Messy_Desk.png'),
-        },
-        {
-          src: require('@/assets/Clean_Desk.webp'),
-          alt: 'organized desk',
-          id: 'organized-desk',
-          fallback: require('@/assets/Clean_Desk.png'),
-        },
+        // {
+        //   src: require('@/assets/Messy_Desk.webp'),
+        //   alt: 'unorganized desk',
+        //   id: 'unorganized-desk',
+        //   fallback: require('@/assets/Messy_Desk.png'),
+        // },
+        // {
+        //   src: require('@/assets/Clean_Desk.webp'),
+        //   alt: 'organized desk',
+        //   id: 'organized-desk',
+        //   fallback: require('@/assets/Clean_Desk.png'),
+        // },
       ],
     ],
     renderImgs: [
@@ -137,10 +146,10 @@ export default {
           fallback: require('@/assets/mic.png'),
         },
         {
-          src: require('@/assets/Carabiner.webp'),
-          alt: 'render of carabiner',
-          id: 'carabiner',
-          fallback: require('@/assets/Carabiner.jpg'),
+          src: require('@/assets/DS_200.webp'),
+          alt: 'render of network hub',
+          id: 'ds-200',
+          fallback: require('@/assets/DS_200.png'),
         },
         {
           src: require('@/assets/Thick_Lines.webp'),
@@ -169,12 +178,24 @@ export default {
           fallback: require('@/assets/render_black.jpg'),
         },
         {
-          src: require('@/assets/Water_Cup.webp'),
-          alt: 'water glass',
-          id: 'glass-water',
-          fallback: require('@/assets/Water_Cup.png'),
+          src: require('@/assets/DS_100.webp'),
+          alt: 'render of network hub',
+          id: 'ds-100',
+          fallback: require('@/assets/DS_100.png'),
+        },
+        {
+          src: require('@/assets/Thin_Lines.webp'),
+          alt: 'Twist Bottle Thin Lines',
+          id: 'thin-lines',
+          fallback: require('@/assets/Thin_Lines.jpg'),
         },
       ],
+    ],
+    videos: [
+      {
+        src: require('@/assets/rotate.mp4'),
+        id: 'rotate',
+      },
     ],
   }),
   methods: {
@@ -194,6 +215,15 @@ export default {
         modal.style.display = 'none';
       };
     },
+    startVideos() {
+      for (let i in this.videos) {
+        var video = document.getElementById(this.videos[i].id);
+        video.play();
+      }
+    },
+  },
+  activated() {
+    this.startVideos();
   },
 };
 </script>
@@ -216,6 +246,14 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
+}
+.row video {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  vertical-align: middle;
+  border-radius: 1em;
+  display: flex;
+  width: 100%;
 }
 .container {
   border-radius: 1em;
