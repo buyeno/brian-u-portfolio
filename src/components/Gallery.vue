@@ -189,12 +189,22 @@ export default {
           id: 'thin-lines',
           fallback: require('@/assets/Thin_Lines.jpg'),
         },
+        {
+          src: require('@/assets/van_render.webp'),
+          alt: 'Van Conversion Render',
+          id: 'van_render',
+          fallback: require('@/assets/van_render.png'),
+        },
       ],
     ],
     videos: [
       {
         src: require('@/assets/rotate.mp4'),
         id: 'rotate',
+      },
+      {
+        src: require('@/assets/van_02.mp4'),
+        id: 'van',
       },
     ],
   }),
