@@ -157,6 +157,12 @@ export default {
           id: 'thick-lines',
           fallback: require('@/assets/Thick_Lines.jpg'),
         },
+        {
+          src: require('@/assets/van_render2.webp'),
+          alt: 'Van Conversion Render',
+          id: 'van_render2',
+          fallback: require('@/assets/van_render2.png'),
+        },
       ],
       [
         {

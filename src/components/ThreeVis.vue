@@ -22,9 +22,19 @@
       v-if="selectedObject || activeObject"
     >
       <h3>{{ annotations[selectedPos].title }}</h3>
-      <p v-if="activeObject">
-        {{ annotations[activePos].text }}
-      </p>
+      <div v-if="activeObject">
+        <picture>
+          <source type="image/webp" :srcset="imgs[0].src" />
+          <img
+            :src="imgs[0].fallback"
+            style="max-width:300px"
+            :alt="imgs[0].alt"
+          />
+        </picture>
+        <p>
+          {{ annotations[activePos].text }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -65,7 +75,15 @@ export default {
             z: 0,
           },
           title: 'Custom Annotation',
-          text: 'Annotations for product descriptions, photos, etc.',
+          text: 'Annotations for product descriptions, photos, videos etc.',
+        },
+      ],
+      imgs: [
+        {
+          src: require('@/assets/render_textured.webp'),
+          alt: 'textured glasses render',
+          id: 'textured-glasses',
+          fallback: require('@/assets/render_textured.jpg'),
         },
       ],
       annotationsGroup: undefined,
