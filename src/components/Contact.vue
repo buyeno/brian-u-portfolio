@@ -89,6 +89,7 @@ input {
   border-width: 0;
   outline: none;
   padding: 5px;
+  height: 2em;
 }
 textarea {
   width: 100%;

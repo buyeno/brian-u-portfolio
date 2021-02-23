@@ -241,6 +241,14 @@ export default {
   activated() {
     this.startVideos();
   },
+  created() {
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        var modal = document.getElementById('modalCanvas');
+        modal.style.display = 'none';
+      }
+    });
+  },
 };
 </script>
 <style scoped>

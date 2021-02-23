@@ -7,13 +7,13 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "core-js": "^2.6.11",
+    "core-js": "^2.6.12",
     "three": "^0.103.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   }
 }
