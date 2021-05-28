@@ -151,11 +151,17 @@ export default {
           id: 'ds-200',
           fallback: require('@/assets/DS_200.png'),
         },
+        // {
+        //   src: require('@/assets/Thick_Lines.webp'),
+        //   alt: 'twist glass with thick lines render',
+        //   id: 'thick-lines',
+        //   fallback: require('@/assets/Thick_Lines.jpg'),
+        // },
         {
-          src: require('@/assets/Thick_Lines.webp'),
-          alt: 'twist glass with thick lines render',
-          id: 'thick-lines',
-          fallback: require('@/assets/Thick_Lines.jpg'),
+          src: require('@/assets/cam_1.webp'),
+          alt: 'Desk Camera',
+          id: 'cam_1',
+          fallback: require('@/assets/cam_1.png'),
         },
         {
           src: require('@/assets/van_render2.webp'),
@@ -163,6 +169,7 @@ export default {
           id: 'van_render2',
           fallback: require('@/assets/van_render2.png'),
         },
+   
       ],
       [
         {
@@ -189,11 +196,17 @@ export default {
           id: 'ds-100',
           fallback: require('@/assets/DS_100.png'),
         },
+        // {
+        //   src: require('@/assets/Thin_Lines.webp'),
+        //   alt: 'Twist Bottle Thin Lines',
+        //   id: 'thin-lines',
+        //   fallback: require('@/assets/Thin_Lines.jpg'),
+        // },
         {
-          src: require('@/assets/Thin_Lines.webp'),
-          alt: 'Twist Bottle Thin Lines',
-          id: 'thin-lines',
-          fallback: require('@/assets/Thin_Lines.jpg'),
+          src: require('@/assets/cam_2.webp'),
+          alt: 'Wall Camera',
+          id: 'cam_2',
+          fallback: require('@/assets/cam_2.png'),
         },
         {
           src: require('@/assets/van_render.webp'),
