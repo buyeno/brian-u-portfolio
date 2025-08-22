@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div id="name" class="name">
-      Brian Uyeno Design
-    </div>
+    <div id="name" class="name">Brian Uyeno Design</div>
     <div id="navbar" class="toolbar">
       <span
         @click="(currentTab = 'Home'), setActiveClass(0)"
@@ -67,31 +65,31 @@
 </template>
 
 <script>
-import Home from './components/Home.vue';
-import Contact from './components/Contact.vue';
-import ThreeVis from './components/ThreeVis.vue';
-import Web from './components/Web.vue';
+import Home from "./components/Home.vue";
+import Contact from "./components/Contact.vue";
+import ThreeVis from "./components/ThreeVis.vue";
+// import Web from "./components/Web.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   data: () => ({
-    currentTab: 'Home',
-    active: ['active', '', ''],
+    currentTab: "Home",
+    active: ["active", "", ""],
     backgroundHeight: null,
     navButtons: [
       {
-        text: 'Gallery',
-        tab: 'Home',
+        text: "Gallery",
+        tab: "Home",
         active: true,
       },
       {
-        text: '3D Viewer',
-        tab: 'ThreeVis',
+        text: "3D Viewer",
+        tab: "ThreeVis",
         active: true,
       },
       {
-        text: 'Contact',
-        tab: 'Contact',
+        text: "Contact",
+        tab: "Contact",
         active: true,
       },
     ],
@@ -100,40 +98,40 @@ export default {
     Home,
     Contact,
     ThreeVis,
-    Web,
+    // Web,
   },
   methods: {
     setBackgroundHeight() {
-      let background = document.getElementById('background');
-      background.style.height = window.innerHeight - 12 + 'px';
+      let background = document.getElementById("background");
+      background.style.height = window.innerHeight - 12 + "px";
       this.backgroundHeight = background.clientHeight;
       this.checkNavOpacity();
     },
     checkNavOpacity() {
       let scrollTop = window.pageYOffset;
-      let nav = document.getElementById('navbar');
+      let nav = document.getElementById("navbar");
       // get scroll position in px
       if (scrollTop > this.backgroundHeight || window.innerWidth < 1100) {
-        nav.style = 'background-color: rgba(0, 0, 0, 1);';
+        nav.style = "background-color: rgba(0, 0, 0, 1);";
       } else {
-        nav.style = 'background-color: rgba(0, 0, 0, 0);';
+        nav.style = "background-color: rgba(0, 0, 0, 0);";
       }
     },
     setActiveClass(i) {
-      var element = document.getElementById('background');
-      element.scrollIntoView({ behavior: 'smooth' });
+      var element = document.getElementById("background");
+      element.scrollIntoView({ behavior: "smooth" });
       for (let id in this.active) {
         if (id == i) {
-          this.active[id] = 'active';
+          this.active[id] = "active";
         } else {
-          this.active[id] = '';
+          this.active[id] = "";
         }
       }
     },
     init() {
       this.setBackgroundHeight();
-      window.addEventListener('resize', this.setBackgroundHeight, false);
-      window.addEventListener('scroll', this.checkNavOpacity, false);
+      window.addEventListener("resize", this.setBackgroundHeight, false);
+      window.addEventListener("scroll", this.checkNavOpacity, false);
     },
   },
   mounted() {
@@ -143,12 +141,12 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Poppins|Dosis');
+@import url("https://fonts.googleapis.com/css?family=Poppins|Dosis");
 body {
   background-color: #000000;
 }
 #app {
-  font-family: 'Dosis', sans-serif;
+  font-family: "Dosis", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

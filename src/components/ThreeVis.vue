@@ -1,6 +1,285 @@
+<script setup>
+import * as THREE from "three";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+const threeCanvas = ref(null);
+let scene,
+  camera,
+  renderer,
+  models,
+  annotations,
+  imgs,
+  annotationsGroup,
+  controls,
+  selectedObject,
+  selectedPos,
+  activePos,
+  moved,
+  raycaster,
+  mouseVector,
+  scaleFactor,
+  play;
+
+onMounted(() => {
+  // 1. Scene
+  scene = new THREE.Scene();
+
+  // 2. Camera
+
+  camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 20;
+  camera.target = new THREE.Vector3();
+
+  // 3. Renderer
+  renderer = new THREE.WebGLRenderer({
+    canvas: threeCanvas.value,
+    antialias: true,
+  });
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.gammaOutput = true;
+  // renderer.gammaFactor = 2.2;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  // container.appendChild(this.renderer.domElement);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 10;
+  controls.maxDistance = 30;
+  controls.enablePan = false;
+
+  scene.add(new THREE.AmbientLight(0x404040, 3));
+
+  let frontLeftLight = new THREE.PointLight();
+  frontLeftLight.position.z = 3;
+  frontLeftLight.position.x = -3;
+  scene.add(frontLeftLight);
+
+  let frontRightLight = new THREE.PointLight();
+  frontRightLight.position.z = 3;
+  frontRightLight.position.x = 3;
+  scene.add(frontRightLight);
+
+  let leftLight = new THREE.PointLight();
+  leftLight.position.x = 10;
+  leftLight.position.z = -5;
+  scene.add(leftLight);
+
+  let rightLight = new THREE.PointLight();
+  rightLight.position.x = -10;
+  rightLight.position.z = -5;
+  scene.add(rightLight);
+
+  let topLight = new THREE.PointLight();
+  topLight.position.y = 5;
+  scene.add(topLight);
+
+  // 4. Add objects
+  models = [
+    {
+      name: "Textured",
+      model: "Plastic_Textured.glb",
+      scale: 10,
+      group: undefined,
+    },
+    {
+      name: "Black",
+      model: "Plastic_Black.glb",
+      scale: 10,
+      group: undefined,
+    },
+    {
+      name: "Blue",
+      model: "Plastic_Blue.glb",
+      scale: 10,
+      group: undefined,
+    },
+  ];
+  annotations = [
+    {
+      location: {
+        x: 5,
+        y: 1,
+        z: 0,
+      },
+      title: "Custom Annotation",
+      text: "Annotations for product descriptions, photos, videos etc.",
+    },
+  ];
+
+  imgs = [
+    {
+      src: require("@/assets/render_textured.webp"),
+      alt: "textured glasses render",
+      id: "textured-glasses",
+      fallback: require("@/assets/render_textured.jpg"),
+    },
+  ];
+  raycaster = new THREE.Raycaster();
+  mouseVector = new THREE.Vector2();
+
+  // gltf loader
+  const loadModel = async () => {
+    let loader = new GLTFLoader();
+    // console.log(require("@/assets/" + models[0].model));
+
+    for (let i in models) {
+      models[i].group = new THREE.Group();
+      loader.load(
+        require("@/assets/" + models[i].model).default,
+        (gltf) => {
+          for (let key in gltf.scene.children) {
+            let mesh = gltf.scene.children[key];
+            mesh.scale.set(models[i].scale, models[i].scale, models[i].scale);
+            models[i].group.add(mesh);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      scene.add(models[i].group);
+      if (i != 0) {
+        models[i].group.visible = false;
+      }
+    }
+  };
+  // const loadSprites = () => {
+  //   annotationsGroup = new THREE.Group();
+  //   const x = 32;
+  //   const y = 32;
+  //   const radius = 30;
+  //   const startAngle = 0;
+  //   const endAngle = Math.PI * 2;
+  //   for (let i in annotations) {
+  //     // Sprite
+  //     // let canvas = document.getElementById("number");
+  //     let canvas = document.createElement("canvas");
+  //     let ctx = canvas.getContext("2d");
+  //     let numberTexture = new THREE.CanvasTexture(canvas);
+
+  //     let spriteMaterial = new THREE.SpriteMaterial({
+  //       map: numberTexture,
+  //       alphaTest: 0.5,
+  //       transparent: true,
+  //       depthTest: false,
+  //       depthWrite: false,
+  //       sizeAttenuation: true,
+  //     });
+
+  //     // Number definition
+  //     ctx.canvas.width = 64;
+  //     ctx.canvas.height = 64;
+
+  //     ctx.clearRect(0, 0, x, y);
+
+  //     ctx.fillStyle = "rgb(0, 0, 0)";
+  //     ctx.beginPath();
+  //     ctx.arc(x, y, radius, startAngle, endAngle);
+  //     ctx.fill();
+
+  //     ctx.strokeStyle = "rgb(255, 255, 255)";
+  //     ctx.lineWidth = 3;
+  //     ctx.beginPath();
+  //     ctx.arc(x, y, radius, startAngle, endAngle);
+  //     ctx.stroke();
+
+  //     ctx.fillStyle = "rgb(255, 255, 255)";
+  //     ctx.font = "25px sans-serif";
+  //     ctx.textAlign = "center";
+  //     ctx.textBaseline = "middle";
+  //     ctx.fillText(parseInt(i) + 1, x, y);
+
+  //     let sprite = new THREE.Sprite(spriteMaterial);
+  //     sprite.scale.set(0.7, 0.7, 0.7);
+  //     sprite.position.set(
+  //       annotations[i].location.x,
+  //       annotations[i].location.y,
+  //       annotations[i].location.z
+  //     );
+
+  //     annotationsGroup.add(sprite);
+  //   }
+  //   scene.add(annotationsGroup);
+  // };
+
+  loadModel();
+  // loadSprites();
+
+  // 5. Animation loop
+  const animate = () => {
+    // if (this.play) {
+    // checkAnnotationDistance();
+    requestAnimationFrame(animate);
+
+    renderer.setClearColor(0x0000000, 0.3);
+    // renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+
+    renderer.render(scene, camera);
+    // }
+  };
+  animate();
+
+  // 6. Handle event listeners
+  const onWindowResize = () => {
+    // if (this.play) {
+    // threeCanvas.style.height = window.innerHeight - 50 + "px";
+
+    // if (this.selectedObject || this.activeObject) {
+    //   this.updateAnnotationLocation();
+    // }
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // }
+  };
+  // window.addEventListener("resize", handleResize);
+
+  window.addEventListener("resize", onWindowResize, false);
+
+  // threeCanvas.addEventListener("mousemove", onDocumentMouseMove, false);
+  // threeCanvas.addEventListener("mouseup", onDocumentMouseclick, false);
+  // threeCanvas.addEventListener("touchend", onDocumentTouchEnd, false);
+  // document.addEventListener("visibilitychange", onDocumentVisibilityChange);
+
+  window.addEventListener("mousedown", () => {
+    moved = false;
+  });
+  window.addEventListener("touchstart", () => {
+    moved = false;
+  });
+
+  // controls.addEventListener("change", () => {
+  //   moved = true;
+  //   if (activeObject) {
+  //     updateAnnotationLocation();
+  //   }
+  // });
+
+  onWindowResize();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
+// const handleResize = () => {
+//   camera.aspect = window.innerWidth / window.innerHeight;
+//   camera.updateProjectionMatrix();
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+// };
+</script>
+
 <template>
   <div id="canvas">
-    <div id="container"></div>
+    <canvas ref="threeCanvas"></canvas>
     <div id="text-container">
       <p>Click/Drag to Rotate</p>
       <p>Scroll/Pinch to Zoom</p>
@@ -27,7 +306,7 @@
           <source type="image/webp" :srcset="imgs[0].src" />
           <img
             :src="imgs[0].fallback"
-            style="max-width:300px"
+            style="max-width: 300px"
             :alt="imgs[0].alt"
           />
         </picture>
@@ -40,75 +319,75 @@
 </template>
 
 <script>
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 export default {
-  name: 'ThreeVis',
+  name: "ThreeVis",
   data() {
     return {
-      models: [
-        {
-          name: 'Textured',
-          model: 'Plastic_Textured.glb',
-          scale: 10,
-          group: undefined,
-        },
-        {
-          name: 'Black',
-          model: 'Plastic_Black.glb',
-          scale: 10,
-          group: undefined,
-        },
-        {
-          name: 'Blue',
-          model: 'Plastic_Blue.glb',
-          scale: 10,
-          group: undefined,
-        },
-      ],
-      annotations: [
-        {
-          location: {
-            x: 5,
-            y: 1,
-            z: 0,
-          },
-          title: 'Custom Annotation',
-          text: 'Annotations for product descriptions, photos, videos etc.',
-        },
-      ],
-      imgs: [
-        {
-          src: require('@/assets/render_textured.webp'),
-          alt: 'textured glasses render',
-          id: 'textured-glasses',
-          fallback: require('@/assets/render_textured.jpg'),
-        },
-      ],
-      annotationsGroup: undefined,
-      selectedObject: undefined,
-      selectedPos: undefined,
-      activePos: undefined,
-      moved: false,
-      scene: undefined,
-      raycaster: undefined,
-      mouseVector: undefined,
-      camera: undefined,
-      renderer: undefined,
-      controls: undefined,
-      play: true,
-      scaleFactor: 0.7,
+      // models: [
+      //   {
+      //     name: "Textured",
+      //     model: "Plastic_Textured.glb",
+      //     scale: 10,
+      //     group: undefined,
+      //   },
+      //   {
+      //     name: "Black",
+      //     model: "Plastic_Black.glb",
+      //     scale: 10,
+      //     group: undefined,
+      //   },
+      //   {
+      //     name: "Blue",
+      //     model: "Plastic_Blue.glb",
+      //     scale: 10,
+      //     group: undefined,
+      //   },
+      // ],
+      // annotations: [
+      //   {
+      //     location: {
+      //       x: 5,
+      //       y: 1,
+      //       z: 0,
+      //     },
+      //     title: "Custom Annotation",
+      //     text: "Annotations for product descriptions, photos, videos etc.",
+      //   },
+      // ],
+      // imgs: [
+      //   {
+      //     src: require("@/assets/render_textured.webp"),
+      //     alt: "textured glasses render",
+      //     id: "textured-glasses",
+      //     fallback: require("@/assets/render_textured.jpg"),
+      //   },
+      // ],
+      // annotationsGroup: undefined,
+      // selectedObject: undefined,
+      // selectedPos: undefined,
+      // activePos: undefined,
+      // moved: false,
+      // scene: undefined,
+      // raycaster: undefined,
+      // mouseVector: undefined,
+      // camera: undefined,
+      // renderer: undefined,
+      // controls: undefined,
+      // play: true,
+      // scaleFactor: 0.7,
     };
   },
   computed: {
     activeObject() {
-      console.log('checking active object');
+      console.log("checking active object");
       if (this.annotationsGroup) {
         if (this.activePos !== undefined) {
-          console.log('activePos set');
+          console.log("activePos set");
           if (this.lastActive) {
-            this.lastActiveObject.material.color.set('#ffffff');
+            this.lastActiveObject.material.color.set("#ffffff");
           }
 
           let activeObject = this.annotationsGroup.children[this.activePos];
@@ -119,13 +398,13 @@ export default {
             this.scaleFactor * 1.2,
             1
           );
-          activeObject.material.color.set('#3dc642');
+          activeObject.material.color.set("#3dc642");
 
           return activeObject;
         } else {
-          console.log('no active set');
+          console.log("no active set");
           if (this.lastActiveObject) {
-            this.lastActiveObject.material.color.set('#ffffff');
+            this.lastActiveObject.material.color.set("#ffffff");
             this.lastActiveObject.scale.set(
               this.scaleFactor,
               this.scaleFactor,
@@ -139,10 +418,10 @@ export default {
     },
   },
   methods: {
-    init: function() {
-      let container = document.getElementById('container');
+    init: function () {
+      let container = document.getElementById("container");
 
-      this.scene = new THREE.Scene();
+      let scene = new THREE.Scene();
 
       this.camera = new THREE.PerspectiveCamera(
         45,
@@ -164,31 +443,31 @@ export default {
       this.controls.maxDistance = 30;
       this.controls.enablePan = false;
 
-      this.scene.add(new THREE.AmbientLight(0x404040, 3));
+      scene.add(new THREE.AmbientLight(0x404040, 3));
 
       let frontLeftLight = new THREE.PointLight();
       frontLeftLight.position.z = 3;
       frontLeftLight.position.x = -3;
-      this.scene.add(frontLeftLight);
+      scene.add(frontLeftLight);
 
       let frontRightLight = new THREE.PointLight();
       frontRightLight.position.z = 3;
       frontRightLight.position.x = 3;
-      this.scene.add(frontRightLight);
+      scene.add(frontRightLight);
 
       let leftLight = new THREE.PointLight();
       leftLight.position.x = 10;
       leftLight.position.z = -5;
-      this.scene.add(leftLight);
+      scene.add(leftLight);
 
       let rightLight = new THREE.PointLight();
       rightLight.position.x = -10;
       rightLight.position.z = -5;
-      this.scene.add(rightLight);
+      scene.add(rightLight);
 
       let topLight = new THREE.PointLight();
       topLight.position.y = 5;
-      this.scene.add(topLight);
+      scene.add(topLight);
 
       this.raycaster = new THREE.Raycaster();
       this.mouseVector = new THREE.Vector2();
@@ -196,24 +475,24 @@ export default {
       this.loadModel();
       this.loadSprites();
 
-      window.addEventListener('resize', this.onWindowResize, false);
+      window.addEventListener("resize", this.onWindowResize, false);
 
-      container.addEventListener('mousemove', this.onDocumentMouseMove, false);
-      container.addEventListener('mouseup', this.onDocumentMouseclick, false);
-      container.addEventListener('touchend', this.onDocumentTouchEnd, false);
+      container.addEventListener("mousemove", this.onDocumentMouseMove, false);
+      container.addEventListener("mouseup", this.onDocumentMouseclick, false);
+      container.addEventListener("touchend", this.onDocumentTouchEnd, false);
       document.addEventListener(
-        'visibilitychange',
+        "visibilitychange",
         this.onDocumentVisibilityChange
       );
 
-      window.addEventListener('mousedown', () => {
+      window.addEventListener("mousedown", () => {
         this.moved = false;
       });
-      window.addEventListener('touchstart', () => {
+      window.addEventListener("touchstart", () => {
         this.moved = false;
       });
 
-      this.controls.addEventListener('change', () => {
+      this.controls.addEventListener("change", () => {
         this.moved = true;
         if (this.activeObject) {
           this.updateAnnotationLocation();
@@ -222,7 +501,7 @@ export default {
 
       this.onWindowResize();
     },
-    animate: function() {
+    animate: function () {
       if (this.play) {
         this.checkAnnotationDistance();
         requestAnimationFrame(this.animate);
@@ -233,10 +512,10 @@ export default {
         this.renderer.render(this.scene, this.camera);
       }
     },
-    onWindowResize: function() {
+    onWindowResize: function () {
       if (this.play) {
-        let container = document.getElementById('container');
-        container.style.height = window.innerHeight - 50 + 'px';
+        let container = document.getElementById("container");
+        container.style.height = window.innerHeight - 50 + "px";
         this.renderer.setSize(container.clientWidth, container.clientHeight);
         if (this.selectedObject || this.activeObject) {
           this.updateAnnotationLocation();
@@ -246,7 +525,7 @@ export default {
         this.camera.updateProjectionMatrix();
       }
     },
-    checkAnnotationDistance: function() {
+    checkAnnotationDistance: function () {
       if (this.annotationsGroup) {
         if (
           this.camera.position.distanceTo(this.controls.target).toFixed(0) > 15
@@ -281,7 +560,7 @@ export default {
       for (let i in this.models) {
         this.models[i].group = new THREE.Group();
         loader.load(
-          require('@/assets/' + this.models[i].model),
+          require("@/assets/" + this.models[i].model),
           (gltf) => {
             for (let key in gltf.scene.children) {
               let mesh = gltf.scene.children[key];
@@ -303,65 +582,65 @@ export default {
         }
       }
     },
-    loadSprites: function() {
-      this.annotationsGroup = new THREE.Group();
-      const x = 32;
-      const y = 32;
-      const radius = 30;
-      const startAngle = 0;
-      const endAngle = Math.PI * 2;
-      for (let i in this.annotations) {
-        // Sprite
-        // let canvas = document.getElementById("number");
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        let numberTexture = new THREE.CanvasTexture(canvas);
+    // loadSprites: function () {
+    //   this.annotationsGroup = new THREE.Group();
+    //   const x = 32;
+    //   const y = 32;
+    //   const radius = 30;
+    //   const startAngle = 0;
+    //   const endAngle = Math.PI * 2;
+    //   for (let i in this.annotations) {
+    //     // Sprite
+    //     // let canvas = document.getElementById("number");
+    //     let canvas = document.createElement("canvas");
+    //     let ctx = canvas.getContext("2d");
+    //     let numberTexture = new THREE.CanvasTexture(canvas);
 
-        let spriteMaterial = new THREE.SpriteMaterial({
-          map: numberTexture,
-          alphaTest: 0.5,
-          transparent: true,
-          depthTest: false,
-          depthWrite: false,
-          sizeAttenuation: true,
-        });
+    //     let spriteMaterial = new THREE.SpriteMaterial({
+    //       map: numberTexture,
+    //       alphaTest: 0.5,
+    //       transparent: true,
+    //       depthTest: false,
+    //       depthWrite: false,
+    //       sizeAttenuation: true,
+    //     });
 
-        // Number definition
-        ctx.canvas.width = 64;
-        ctx.canvas.height = 64;
+    //     // Number definition
+    //     ctx.canvas.width = 64;
+    //     ctx.canvas.height = 64;
 
-        ctx.clearRect(0, 0, x, y);
+    //     ctx.clearRect(0, 0, x, y);
 
-        ctx.fillStyle = 'rgb(0, 0, 0)';
-        ctx.beginPath();
-        ctx.arc(x, y, radius, startAngle, endAngle);
-        ctx.fill();
+    //     ctx.fillStyle = "rgb(0, 0, 0)";
+    //     ctx.beginPath();
+    //     ctx.arc(x, y, radius, startAngle, endAngle);
+    //     ctx.fill();
 
-        ctx.strokeStyle = 'rgb(255, 255, 255)';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, startAngle, endAngle);
-        ctx.stroke();
+    //     ctx.strokeStyle = "rgb(255, 255, 255)";
+    //     ctx.lineWidth = 3;
+    //     ctx.beginPath();
+    //     ctx.arc(x, y, radius, startAngle, endAngle);
+    //     ctx.stroke();
 
-        ctx.fillStyle = 'rgb(255, 255, 255)';
-        ctx.font = '25px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(parseInt(i) + 1, x, y);
+    //     ctx.fillStyle = "rgb(255, 255, 255)";
+    //     ctx.font = "25px sans-serif";
+    //     ctx.textAlign = "center";
+    //     ctx.textBaseline = "middle";
+    //     ctx.fillText(parseInt(i) + 1, x, y);
 
-        let sprite = new THREE.Sprite(spriteMaterial);
-        sprite.scale.set(0.7, 0.7, 0.7);
-        sprite.position.set(
-          this.annotations[i].location.x,
-          this.annotations[i].location.y,
-          this.annotations[i].location.z
-        );
+    //     let sprite = new THREE.Sprite(spriteMaterial);
+    //     sprite.scale.set(0.7, 0.7, 0.7);
+    //     sprite.position.set(
+    //       this.annotations[i].location.x,
+    //       this.annotations[i].location.y,
+    //       this.annotations[i].location.z
+    //     );
 
-        this.annotationsGroup.add(sprite);
-      }
-      this.scene.add(this.annotationsGroup);
-    },
-    onDocumentMouseMove: function(event) {
+    //     this.annotationsGroup.add(sprite);
+    //   }
+    //   this.scene.add(this.annotationsGroup);
+    // },
+    onDocumentMouseMove: function (event) {
       event.preventDefault();
       if (this.selectedObject) {
         if (this.activeObject != this.selectedObject) {
@@ -373,7 +652,7 @@ export default {
       let intersects = this.getIntersects(event.pageX, event.pageY);
 
       if (intersects.length > 0) {
-        let res = intersects.filter(function(res) {
+        let res = intersects.filter(function (res) {
           return res && res.object;
         })[0];
         if (res && res.object && res.object.material.opacity > 0) {
@@ -402,29 +681,29 @@ export default {
 
       vector.x = Math.round((0.5 + vector.x / 2) * canvas.width);
       vector.y = Math.round((0.5 - vector.y / 2) * canvas.height);
-      if (document.querySelector('.annotation')) {
-        let annotation = document.querySelector('.annotation');
-        let annotationElement = document.getElementById('annotationElement');
+      if (document.querySelector(".annotation")) {
+        let annotation = document.querySelector(".annotation");
+        let annotationElement = document.getElementById("annotationElement");
 
         if (this.activePos != undefined) {
-          annotationElement.style.borderColor = '#3dc642';
+          annotationElement.style.borderColor = "#3dc642";
         }
 
         if (canvas.width < 400) {
           annotation.style.top = 39;
           annotation.style.left = 0;
-          annotation.style.width = '100%';
+          annotation.style.width = "100%";
         } else if (canvas.width - vector.x > annotationElement.clientWidth) {
-          annotation.style.top = vector.y + 'px';
-          annotation.style.left = vector.x + 35 + 'px';
+          annotation.style.top = vector.y + "px";
+          annotation.style.left = vector.x + 35 + "px";
         } else {
-          annotation.style.top = vector.y + 'px';
+          annotation.style.top = vector.y + "px";
           annotation.style.left =
-            vector.x - annotationElement.clientWidth - 35 + 'px';
+            vector.x - annotationElement.clientWidth - 35 + "px";
         }
       }
     },
-    onDocumentTouchEnd: function(event) {
+    onDocumentTouchEnd: function (event) {
       event.preventDefault();
 
       //check sprite intersection
@@ -441,7 +720,7 @@ export default {
         event.changedTouches[0].clientY
       );
       if (intersects.length > 0) {
-        let res = intersects.filter(function(res) {
+        let res = intersects.filter(function (res) {
           return res && res.object;
         })[0];
         if (res && res.object) {
@@ -458,7 +737,7 @@ export default {
         this.selectedPos = undefined;
       }
     },
-    onDocumentMouseclick: function() {
+    onDocumentMouseclick: function () {
       if (this.moved) return;
       if (this.selectedObject) {
         this.activePos = this.selectedPos;
@@ -467,7 +746,7 @@ export default {
         this.activePos = undefined;
       }
     },
-    getIntersects: function(x, y) {
+    getIntersects: function (x, y) {
       x = (x / window.innerWidth) * 2 - 1;
       y = -(y / window.innerHeight) * 2 + 1;
       this.mouseVector.set(x, y);
@@ -477,18 +756,18 @@ export default {
     toggleLayer(i) {
       let btn;
       for (let id in this.models) {
-        btn = document.getElementById('model-button-' + id);
+        btn = document.getElementById("model-button-" + id);
         if (i == id) {
           this.models[id].group.visible = true;
-          btn.classList.add('active');
+          btn.classList.add("active");
         } else {
           this.models[id].group.visible = false;
-          btn.classList.remove('active');
+          btn.classList.remove("active");
         }
       }
     },
     onDocumentVisibilityChange() {
-      if (document.visibilityState === 'hidden') {
+      if (document.visibilityState === "hidden") {
         this.play = false;
       } else {
         this.play = true;
@@ -496,18 +775,18 @@ export default {
     },
   },
   mounted() {
-    this.init();
-    this.animate();
-    let model = document.getElementById('model-button-0');
-    model.classList.add('active');
+    // this.init();
+    // this.animate();
+    // let model = document.getElementById("model-button-0");
+    // model.classList.add("active");
   },
   deactivated() {
-    this.play = false;
+    // this.play = false;
   },
   activated() {
-    this.play = true;
-    this.onWindowResize();
-    this.animate();
+    // this.play = true;
+    // this.onWindowResize();
+    // this.animate();
   },
 };
 </script>

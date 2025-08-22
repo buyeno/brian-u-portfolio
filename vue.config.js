@@ -1,4 +1,4 @@
-var webpack = require('webpack');
+var webpack = require("webpack");
 
 module.exports = {
   configureWebpack: {
@@ -7,9 +7,9 @@ module.exports = {
   chainWebpack: (config) => {
     // gltf loader
     config.module
-      .rule('gltf')
+      .rule("gltf")
       .test(/\.(glb|gltf)$/)
-      .use('file-loader')
-      .loader('file-loader');
+      .use("file-loader")
+      .loader("file-loader");
   },
 };
